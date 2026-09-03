@@ -1,0 +1,17 @@
+---
+interface Props {
+  cmd: string;
+  typeOn?: boolean;
+}
+
+// typeOn is accepted for API-shape parity with the future decrypt/type-on
+// effect (guide §07); it is currently a no-op — text always renders static.
+const { cmd } = Astro.props;
+---
+
+<p class="prompt mono"><span class="acc">$</span> {cmd}</p>
+
+<style>
+  .prompt { margin: 0; color: var(--text-dim); }
+  .acc { color: var(--acc); }
+</style>

@@ -1,0 +1,35 @@
+---
+interface Props {
+  as?: string;
+  padding?: string;
+}
+
+const { as = 'div', padding } = Astro.props;
+const Tag = as;
+---
+
+<Tag class="blueprint" style={padding ? `padding:${padding}` : undefined}>
+  <slot />
+  <i class="corner tl" aria-hidden="true"></i>
+  <i class="corner tr" aria-hidden="true"></i>
+  <i class="corner bl" aria-hidden="true"></i>
+  <i class="corner br" aria-hidden="true"></i>
+</Tag>
+
+<style>
+  .blueprint {
+    position: relative;
+    border: 1px solid var(--line-2);
+  }
+  .corner {
+    position: absolute;
+    font: 400 10px/1 var(--font-mono);
+    color: var(--acc-line);
+    pointer-events: none;
+  }
+  .corner::before { content: '+'; }
+  .tl { left: -4px; top: -5px; }
+  .tr { right: -4px; top: -5px; }
+  .bl { left: -4px; bottom: -5px; }
+  .br { right: -4px; bottom: -5px; }
+</style>

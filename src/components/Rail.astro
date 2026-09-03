@@ -1,0 +1,105 @@
+---
+interface Props {
+  path: string;
+}
+
+const nav: [string, string, string | null][] = [
+  ['01', 'Home', '/'],
+  ['02', 'Work', '/projects'],
+  ['03', 'Publications', '/publications'],
+  ['04', 'CV', null],
+  ['05', 'Writing', null],
+  ['06', 'About', '/about'],
+  ['07', 'Now / Uses', '/now'],
+];
+const contact: [string, string, string] = ['08', 'Contact', '/contact'];
+
+const { path } = Astro.props;
+const active = (href: string | null) => !!href && (href === '/' ? path === '/' : path.startsWith(href));
+---
+
+<nav aria-label="Primary" class="rail">
+  <a class="brand" href="/">P. Cardona</a>
+  <details class="disclosure">
+    <summary class="toggle" aria-label="Toggle navigation">
+      <span aria-hidden="true">☰</span>
+    </summary>
+    <div class="body">
+      <ul>
+        {nav.map(([n, label, href]) => (
+          <li>
+            {href ? (
+              <a href={href} aria-current={active(href) ? 'page' : undefined} class:list={[{ active: active(href) }]}>
+                <span class="num">{n}</span>{label}
+              </a>
+            ) : (
+              <span class="disabled" aria-disabled="true">
+                <span class="num">{n}</span>{label}
+              </span>
+            )}
+          </li>
+        ))}
+      </ul>
+      <a class="foot" href={contact[2]} aria-current={active(contact[2]) ? 'page' : undefined}>
+        <span class="num">{contact[0]}</span>{contact[1]}
+      </a>
+      <span class="cap locale">EN · ES</span>
+    </div>
+  </details>
+</nav>
+
+<style>
+  .rail {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: var(--rail);
+    background: var(--surface);
+    border-right: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+  }
+  .brand {
+    display: block;
+    padding: var(--s-4) var(--s-3);
+    font: 600 13px/1 var(--font-head);
+    letter-spacing: .14em;
+    color: var(--acc);
+  }
+  .disclosure { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+  .toggle { display: none; }
+  .body { display: flex; flex-direction: column; flex: 1; padding: 0 var(--s-3) var(--s-4); gap: var(--s-2); }
+  ul { display: flex; flex-direction: column; gap: var(--s-2); }
+  .body a, .disabled {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s-2);
+    font: 400 11px/1.4 var(--font-mono);
+    color: var(--text-dim);
+    padding: var(--s-1) 0;
+  }
+  .body a:hover, .body a.active { color: var(--acc); }
+  .disabled { color: var(--text-mute); }
+  .num { color: var(--text-mute); }
+  .body a.active .num, .body a:hover .num { color: var(--acc); }
+  .foot { margin-top: auto; }
+  .locale { margin-top: var(--s-2); }
+
+  @media (max-width: 860px) {
+    .rail { inset: 0 0 auto 0; width: 100%; height: 48px; flex-direction: row; align-items: center; border-right: 0; border-bottom: 1px solid var(--line); }
+    .brand { padding: 0 var(--s-3); }
+    .disclosure { flex: none; margin-left: auto; position: relative; }
+    .toggle { display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; cursor: pointer; list-style: none; font-size: 18px; color: var(--text-dim); }
+    .toggle::-webkit-details-marker { display: none; }
+    .body {
+      display: none;
+      position: fixed;
+      inset: 48px 0 0 0;
+      background: var(--surface);
+      overflow-y: auto;
+      padding: var(--s-5) var(--s-4);
+    }
+    .disclosure[open] .body { display: flex; }
+    .body a, .disabled { font-size: 14px; }
+  }
+</style>

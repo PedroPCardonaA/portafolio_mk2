@@ -1,0 +1,18 @@
+---
+import Base from './Base.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  path?: string;
+  hint?: string;
+}
+
+const { title, description, path, hint } = Astro.props;
+---
+
+<Base title={title} description={description} path={path} hint={hint}>
+  <div class="prose">
+    <slot />
+  </div>
+</Base>

@@ -1,0 +1,28 @@
+---
+interface Props {
+  variant?: 'default' | 'accent';
+  href?: string;
+}
+
+const { variant = 'default', href } = Astro.props;
+const Tag = href ? 'a' : 'span';
+---
+
+<Tag class={`chip ${variant === 'accent' ? 'chip-accent' : ''}`} href={href}>
+  <slot />
+</Tag>
+
+<style>
+  .chip {
+    display: inline-block;
+    border: 1px solid var(--line-2);
+    padding: 3px 6px;
+    font: 400 9px/1 var(--font-mono);
+    color: var(--text-dim);
+  }
+  a.chip:hover { color: var(--acc-hover); border-color: var(--acc-hover); }
+  .chip-accent {
+    border-color: rgba(87, 224, 138, .5);
+    color: var(--acc);
+  }
+</style>

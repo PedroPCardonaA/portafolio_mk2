@@ -1,0 +1,33 @@
+:root {
+  /* ground + structure */
+  --bg:        #0a0b0a;   /* page */
+  --surface:   #0d100e;   /* panels, rail */
+  --line:      #24302a;   /* hairline, structural */
+  --line-2:    #2b3a2f;   /* hairline, framed objects */
+
+  /* type — 12.6:1 and 6.1:1 on --bg */
+  --text:        #d7ded8;
+  --text-strong: #e8efe9;  /* headings only */
+  --text-dim:    #8b978f;
+  --text-mute:   #6d7a72;  /* labels only, never paragraphs */
+
+  /* accent */
+  --acc:       #57e08a;   /* 10.9:1 on --bg */
+  --acc-hover: #8ff0b4;
+  --acc-press: #3cb96c;
+  --acc-line:  #4a6b56;   /* registration marks */
+  --acc-wash:  rgba(87,224,138,.05);
+
+  /* type */
+  --font-head: 'Barlow Condensed', sans-serif;
+  --font-body: 'Barlow', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  /* rhythm — 4px base */
+  --s-1:4px; --s-2:8px; --s-3:12px; --s-4:16px;
+  --s-5:24px; --s-6:32px; --s-7:48px; --s-8:72px;
+
+  --rail: 168px;          /* 1k */
+  --measure: 68ch;        /* prose cap */
+  --radius: 0;            /* square corners, always */
+}

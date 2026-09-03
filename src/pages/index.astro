@@ -1,0 +1,79 @@
+---
+import Base from '../layouts/Base.astro';
+import Prompt from '../components/Prompt.astro';
+import Chip from '../components/Chip.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+const featured = (await getCollection('projects', (p: CollectionEntry<'projects'>) => !p.data.draft && p.data.featured))
+  .sort((a: CollectionEntry<'projects'>, b: CollectionEntry<'projects'>) => a.data.order - b.data.order);
+---
+
+<Base
+  title="Pedro Cardona — engineer, researcher"
+  description="Portfolio of Pedro Cardona: projects, publications and about."
+  path="/"
+>
+  <section class="boot">
+    <Prompt cmd="whoami" typeOn />
+    <h1>Pedro Cardona</h1>
+    <p class="pitch">Engineer · research — projects and publications in one readable place.</p>
+    <ul class="chips">
+      <li><Chip variant="accent" href="/projects">projects</Chip></li>
+      <li><Chip href="/publications">publications</Chip></li>
+      <li><Chip href="/about">about</Chip></li>
+    </ul>
+    <a class="cue" href="#work">▌ scroll ↓</a>
+  </section>
+
+  <section id="work" class="work">
+    <h2>Selected work</h2>
+    <ul>
+      {featured.map((p) => (
+        <li>
+          <a href={`/projects/${p.id}`}>
+            <span>{p.data.title}</span>
+            <span class="mono">{p.data.year}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <a class="all" href="/projects">All projects →</a>
+  </section>
+</Base>
+
+<style>
+  .boot {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--s-4);
+    padding: 0 var(--s-8);
+  }
+  .pitch { color: var(--text-dim); font-size: 15px; max-width: 60ch; }
+  .chips { display: flex; gap: var(--s-2); margin-top: var(--s-2); }
+  .cue { display: inline-block; color: var(--acc); font: 400 12px var(--font-mono); margin-top: var(--s-4); }
+
+  .work {
+    padding: var(--s-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+    border-top: 1px solid var(--line);
+  }
+  .work ul { display: flex; flex-direction: column; }
+  .work li { border-top: 1px solid var(--line); }
+  .work li:last-child { border-bottom: 1px solid var(--line); }
+  .work a {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--s-3) 0;
+    font: 600 20px/1.1 var(--font-head);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--text);
+  }
+  .work a:hover { color: var(--acc); }
+  .work a .mono { color: var(--text-dim); font-size: 12px; }
+  .all { align-self: flex-start; color: var(--acc); font: 400 12px var(--font-mono); margin-top: var(--s-2); }
+</style>

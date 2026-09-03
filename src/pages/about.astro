@@ -1,0 +1,55 @@
+---
+import Base from '../layouts/Base.astro';
+import Blueprint from '../components/Blueprint.astro';
+import Chip from '../components/Chip.astro';
+import about from '../data/about.json';
+---
+
+<Base title="About — Pedro Cardona" description="About Pedro Cardona." path="/about">
+  <section class="page">
+    <div class="intro">
+      <Blueprint as="div" padding="0">
+        <div class="portrait">PORTRAIT</div>
+      </Blueprint>
+      <div class="bio">
+        <h1>Who I am</h1>
+        {about.bio.map((p: string) => <p>{p}</p>)}
+      </div>
+    </div>
+
+    <div class="block">
+      <p class="cap">Certifications</p>
+      <div class="chips">
+        {about.certs.map((c: { name: string; current: boolean }) => (
+          <Chip variant={c.current ? 'accent' : 'default'}>{c.name}</Chip>
+        ))}
+      </div>
+    </div>
+
+    <div class="block">
+      <p class="cap">Tools I actually use</p>
+      <p class="tools">{about.tools.join(', ')}</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page { padding: var(--s-8); display: flex; flex-direction: column; gap: var(--s-6); max-width: var(--measure); }
+  .intro { display: flex; gap: var(--s-5); align-items: flex-start; }
+  .portrait {
+    width: 88px;
+    height: 88px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: repeating-linear-gradient(135deg, rgba(87,224,138,.09) 0 1px, transparent 1px 7px);
+    color: var(--text-mute);
+    font: 400 9px var(--font-mono);
+    letter-spacing: .1em;
+  }
+  .bio { display: flex; flex-direction: column; gap: var(--s-3); }
+  .bio p { color: var(--text-dim); font-size: 14.5px; }
+  .block { display: flex; flex-direction: column; gap: var(--s-3); }
+  .chips { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+  .tools { color: var(--text-dim); font-size: 14.5px; margin: 0; }
+</style>

@@ -1,0 +1,68 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import type { MarkdownHeading } from 'astro';
+
+interface Props {
+  data: CollectionEntry<'projects'>['data'];
+  headings?: MarkdownHeading[];
+}
+
+const { data, headings = [] } = Astro.props;
+const toc = headings.filter((h) => h.depth === 2);
+const links = data.links ?? {};
+---
+
+<aside class="meta">
+  <p class="cap">Meta</p>
+  {data.role && <div class="row"><span class="label mono">role</span><span>{data.role}</span></div>}
+  {data.stack?.length > 0 && <div class="row"><span class="label mono">stack</span><span>{data.stack.join(', ')}</span></div>}
+  {data.team && data.team.length > 0 && <div class="row"><span class="label mono">team</span><span>{data.team.join(', ')}</span></div>}
+  {data.period && <div class="row"><span class="label mono">period</span><span>{data.period}</span></div>}
+  {links.repo && <div class="row"><a class="acc" href={links.repo}>repo ↗</a></div>}
+  {links.live && <div class="row"><a class="acc" href={links.live}>live ↗</a></div>}
+  {links.paper && <div class="row"><a class="acc" href={links.paper}>paper ↗</a></div>}
+
+  {toc.length > 0 && (
+    <nav class="toc" aria-label="On this page">
+      <p class="cap">On this page</p>
+      <ul>
+        {toc.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}
+      </ul>
+    </nav>
+  )}
+</aside>
+
+<style>
+  .meta {
+    width: 200px;
+    flex: none;
+    border-left: 1px solid var(--line);
+    padding: var(--s-4) var(--s-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+    position: sticky;
+    top: var(--s-5);
+    align-self: flex-start;
+    font: 400 12px/1.6 var(--font-mono);
+    color: var(--text-dim);
+  }
+  .row { display: flex; flex-direction: column; gap: 2px; }
+  .label { color: var(--text-mute); }
+  .acc { color: var(--acc); }
+  .toc { margin-top: var(--s-3); display: flex; flex-direction: column; gap: var(--s-1); }
+  .toc ul { display: flex; flex-direction: column; gap: 4px; }
+  .toc a:hover { color: var(--acc); }
+
+  @media (max-width: 1000px) {
+    .meta {
+      width: auto;
+      position: static;
+      border-left: 0;
+      border-top: 1px solid var(--line);
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: var(--s-4);
+    }
+  }
+</style>

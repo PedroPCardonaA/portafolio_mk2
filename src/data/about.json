@@ -1,0 +1,17 @@
+{
+  "bio": [
+    "TODO: replace with the real first paragraph of your bio — who you are, what you do.",
+    "TODO: replace with a second paragraph — background, focus areas, what you're looking for."
+  ],
+  "certs": [
+    { "name": "TODO: Certification A", "current": true },
+    { "name": "TODO: Certification B", "current": false },
+    { "name": "TODO: Certification C", "current": false }
+  ],
+  "tools": [
+    "TODO: Tool A",
+    "TODO: Tool B",
+    "TODO: Tool C",
+    "TODO: Tool D"
+  ]
+}

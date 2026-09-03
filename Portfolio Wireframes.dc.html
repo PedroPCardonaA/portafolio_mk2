@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="_ds/industry-490f025c-cd96-468b-8e5f-7b3d1a7205bc/styles.css">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&display=swap">
+<style>
+body{margin:0;background:#0a0b0a;font-family:'IBM Plex Mono',ui-monospace,monospace;color:#d7ded8}
+.dv-turn{padding:40px 44px 32px;border-bottom:1px solid rgba(255,255,255,.07);scroll-margin-top:16px}
+.dv-thd{display:flex;align-items:baseline;gap:10px;margin:0 0 20px}
+.dv-tid{font:600 10px 'IBM Plex Mono',monospace;padding:3px 7px;background:#57e08a;color:#06170d;text-decoration:none}
+.dv-tname{font:600 13px/1.2 'IBM Plex Mono',monospace;color:#d7ded8;letter-spacing:.04em}
+.dv-grp{font:600 11px/1 'IBM Plex Mono',monospace;color:#57e08a;letter-spacing:.18em;margin:34px 0 16px;display:flex;align-items:center;gap:10px}
+.dv-grp:after{content:'';flex:1;height:1px;background:rgba(87,224,138,.22)}
+.dv-opts{display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start}
+.dv-opt{flex:none;display:flex;flex-direction:column;gap:9px;scroll-margin-top:16px}
+.dv-oid{font:600 10.5px 'IBM Plex Mono',monospace;padding:3px 7px;background:rgba(255,255,255,.09);color:#d7ded8;text-decoration:none}
+.dv-olabel{display:flex;align-items:baseline;gap:8px;font:400 11px/1.3 'IBM Plex Mono',monospace;color:#8b978f;max-width:520px}
+.dv-card{max-width:100%;background:#0d100e;border:1px solid #24302a}
+.dv-opt:target .dv-oid{background:#57e08a;color:#06170d}
+.dv-next{margin:26px 0 0;font:11px/1.7 'IBM Plex Mono',monospace;color:#8b978f}
+.bp{position:relative}
+.bp:before,.bp:after,.bp>i.cm:before,.bp>i.cm:after{content:'+';position:absolute;font:400 10px/1 'IBM Plex Mono',monospace;color:#4a6b56}
+.bp:before{left:-4px;top:-5px}.bp:after{right:-4px;top:-5px}
+.bp>i.cm{position:absolute;inset:0;pointer-events:none}
+.bp>i.cm:before{left:-4px;bottom:-5px}.bp>i.cm:after{right:-4px;bottom:-5px}
+.ln{height:7px;background:rgba(255,255,255,.09)}
+.ph{border:1px solid #2b3a2f;background:repeating-linear-gradient(135deg,rgba(87,224,138,.09) 0 1px,transparent 1px 7px);display:flex;align-items:center;justify-content:center;font:400 9px/1 'IBM Plex Mono',monospace;color:#5c7a67;letter-spacing:.1em}
+.cap{font:400 9px/1.4 'IBM Plex Mono',monospace;color:#6d7a72;letter-spacing:.1em}
+.chip{border:1px solid #2b3a2f;padding:3px 6px;font:400 9px/1 'IBM Plex Mono',monospace;color:#8b978f}
+.chipa{border:1px solid rgba(87,224,138,.5);padding:3px 6px;font:400 9px/1 'IBM Plex Mono',monospace;color:#57e08a}
+.h1{font:700 26px/0.95 'Barlow Condensed',sans-serif;letter-spacing:.02em;color:#e8efe9;text-transform:uppercase}
+.h2{font:600 15px/1.05 'Barlow Condensed',sans-serif;letter-spacing:.06em;color:#d7ded8;text-transform:uppercase}
+.mono{font:400 10px/1.5 'IBM Plex Mono',monospace;color:#8b978f}
+.acc{color:#57e08a}
+.bar{display:flex;align-items:center;gap:8px;padding:8px 11px;border-bottom:1px solid #24302a;font:400 10px/1 'IBM Plex Mono',monospace;color:#6d7a72;letter-spacing:.06em}
+.dot{width:6px;height:6px;background:#57e08a;flex:none}
+</style></helmet>
+
+<section class="dv-turn" id="t1">
+<div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">PORTFOLIO WIREFRAMES — dark phosphor, left-rail, density 7</span></div>
+<p class="mono" style="max-width:760px;margin:-8px 0 0">Structure only. Black ground, one phosphor-green accent, mono type; blueprint frames and <span class="acc">+</span> registration marks carried from the bound system. Motion notes (type-on, scanlines, hover reveal, cursor grid) are marked as <span class="acc">[fx]</span> tags, not built.</p>
+
+<div class="dv-grp">A · HOME LAYOUT</div>
+<div class="dv-opts">
+
+<div class="dv-opt" id="1a"><div class="dv-olabel"><a class="dv-oid" href="#1a">1a</a>Terminal boot intro, full-screen — scroll into the work</div>
+<div class="dv-card bp" style="width:520px"><i class="cm"></i>
+  <div class="bar"><span class="dot"></span>~/ <span class="acc">boot</span><span style="margin-left:auto">[fx] type-on · scanlines</span></div>
+  <div style="height:300px;display:flex;flex-direction:column;justify-content:center;gap:14px;padding:0 46px">
+    <div class="mono"><span class="acc">$</span> whoami</div>
+    <div class="h1" style="font-size:38px">Pedro Cardona</div>
+    <div class="mono" style="color:#b3bdb6">engineer · research · <span class="acc">cv + projects + publications</span></div>
+    <div style="display:flex;gap:8px;margin-top:6px"><span class="chipa">read cv</span><span class="chip">projects</span><span class="chip">publications</span></div>
+    <div class="mono" style="margin-top:18px;color:#57e08a">▌ scroll ↓</div>
+  </div>
+  <div style="border-top:1px solid #24302a;display:flex">
+    <div style="width:104px;flex:none;border-right:1px solid #24302a;padding:11px;display:flex;flex-direction:column;gap:8px" class="mono"><span class="acc">P.CARDONA</span><span>01 work</span><span>02 papers</span><span>03 cv</span><span>04 about</span></div>
+    <div style="flex:1;padding:13px 15px;display:flex;flex-direction:column;gap:9px">
+      <div class="h2">Selected work</div>
+      <div class="ln" style="width:78%"></div><div class="ln" style="width:64%"></div><div class="ln" style="width:71%"></div>
+    </div>
+  </div>
+</div></div>
+
+<div class="dv-opt" id="1b"><div class="dv-olabel"><a class="dv-oid" href="#1b">1b</a>Fixed identity panel left, everything scrolls right</div>
+<div class="dv-card bp" style="width:520px"><i class="cm"></i>
+  <div class="bar"><span class="dot"></span>~/ <span class="acc">index</span><span style="margin-left:auto">[fx] cursor grid</span></div>
+  <div style="display:flex;height:392px">
+    <div style="width:196px;flex:none;border-right:1px solid #24302a;padding:18px 15px;display:flex;flex-direction:column;gap:12px">
+      <div class="ph" style="height:74px;width:74px">PORTRAIT</div>
+      <div class="h1" style="font-size:22px">Pedro<br>Cardona</div>
+      <div class="mono">Engineer · researcher.<br>CV, projects and papers,<br>in one readable place.</div>
+      <div style="display:flex;flex-direction:column;gap:7px;margin-top:6px" class="mono">
+        <span class="acc">→ 01 work</span><span>→ 02 publications</span><span>→ 03 cv / résumé</span><span>→ 04 writing</span><span>→ 05 about</span><span>→ 06 contact</span></div>
+      <div class="mono" style="margin-top:auto">gh · in · mail</div>
+    </div>
+    <div style="flex:1;padding:16px 17px;display:flex;flex-direction:column;gap:12px;overflow:hidden">
+      <div class="cap">01 — WORK / 6</div>
+      <div class="ln" style="width:70%;height:11px"></div><div class="ln" style="width:52%"></div>
+      <div style="height:1px;background:#24302a"></div>
+      <div class="ln" style="width:66%;height:11px"></div><div class="ln" style="width:58%"></div>
+      <div style="height:1px;background:#24302a"></div>
+      <div class="ln" style="width:74%;height:11px"></div><div class="ln" style="width:45%"></div>
+      <div style="height:1px;background:#24302a"></div>
+      <div class="cap" style="margin-top:4px">02 — PUBLICATIONS / 4</div>
+      <div class="ln" style="width:80%"></div><div class="ln" style="width:62%"></div>
+    </div>
+  </div>
+</div></div>
+
+<div class="dv-opt" id="1c"><div class="dv-olabel"><a class="dv-oid" href="#1c">1c</a>Dense single-page index — no reveals, everything listed</div>
+<div class="dv-card bp" style="width:520px"><i class="cm"></i>
+  <div class="bar"><span class="dot"></span>~/ <span class="acc">all</span><span style="margin-left:auto">one page · 0 clicks</span></div>
+  <div style="padding:16px 17px;display:flex;flex-direction:column;gap:11px">
+    <div style="display:flex;align-items:baseline;gap:12px"><span class="h1" style="font-size:22px">P. Cardona</span><span class="mono">/ cv · projects · publications</span></div>
+    <div style="height:1px;background:#24302a"></div>
+    <div class="cap">PROJECTS</div>
+    <div style="display:grid;grid-template-columns:26px 1fr 84px 40px;gap:6px 10px" class="mono">
+      <span class="acc">01</span><span class="ln" style="width:88%"></span><span class="ln" style="width:70%"></span><span>2026</span>
+      <span class="acc">02</span><span class="ln" style="width:74%"></span><span class="ln" style="width:60%"></span><span>2025</span>
+      <span class="acc">03</span><span class="ln" style="width:81%"></span><span class="ln" style="width:78%"></span><span>2025</span>
+      <span class="acc">04</span><span class="ln" style="width:69%"></span><span class="ln" style="width:52%"></span><span>2024</span>
+    </div>
+    <div class="cap" style="margin-top:5px">PUBLICATIONS</div>
+    <div style="display:grid;grid-template-columns:26px 1fr 64px;gap:6px 10px" class="mono">
+      <span class="acc">P1</span><span class="ln" style="width:92%"></span><span>DOI</span>
+      <span class="acc">P2</span><span class="ln" style="width:80%"></span><span>DOI</span>
+      <span class="acc">P3</span><span class="ln" style="width:86%"></span><span>PDF</span>
+    </div>
+    <div class="cap" style="margin-top:5px">CV — CERTIFICATIONS · EDUCATION · ROLES</div>
+    <div class="ln" style="width:95%"></div><div class="ln" style="width:88%"></div><div class="ln" style="width:76%"></div>
+    <div style="display:flex;gap:8px;margin-top:6px"><span class="chipa">download pdf</span><span class="chip">contact</span></div>
+  </div>
+</div></div>
+
+<div class="dv-opt" id="1d"><div class="dv-olabel"><a class="dv-oid" href="#1d">1d</a>Hybrid — short terminal band, rail always present, work table immediately</div>
+<div class="dv-card bp" style="width:520px"><i class="cm"></i>
+  <div class="bar"><span class="dot"></span>~/ <span class="acc">home</span><span style="margin-left:auto">[fx] type-on band only</span></div>
+  <div style="display:flex;height:392px">
+    <div style="width:96px;flex:none;border-right:1px solid #24302a;padding:12px 10px;display:flex;flex-direction:column;gap:8px" class="mono"><span class="acc">P.C</span><span class="acc">home</span><span>work</span><span>papers</span><span>cv</span><span>writing</span><span>about</span><span style="margin-top:auto">contact</span></div>
+    <div style="flex:1;display:flex;flex-direction:column">
+      <div style="padding:16px 17px;border-bottom:1px solid #24302a;display:flex;flex-direction:column;gap:7px">
+        <div class="mono"><span class="acc">$</span> cat about.txt</div>
+        <div class="h1">Engineer.<br>Researcher.</div>
+        <div class="mono" style="width:78%">A friendly, readable version of the CV — plus every project and paper.</div>
+      </div>
+      <div style="padding:14px 17px;display:flex;flex-direction:column;gap:9px">
+        <div style="display:flex;justify-content:space-between" class="cap"><span>RECENT</span><span>ALL →</span></div>
+        <div style="display:flex;gap:10px"><div class="ph" style="width:56px;height:40px">IMG</div><div style="flex:1;display:flex;flex-direction:column;gap:6px;justify-content:center"><div class="ln" style="width:70%"></div><div class="ln" style="width:48%"></div></div></div>
+        <div style="display:flex;gap:10px"><div class="ph" style="width:56px;height:40px">IMG</div><div style="flex:1;display:flex;flex-direction:column;gap:6px;justify-content:center"><div class="ln" style="width:62%"></div><div class="ln" style="width:55%"></div></div></div>
+        <div style="display:flex;gap:10px"><div class="ph" style="width:56px;height:40px">IMG</div><div style="flex:1;display:flex;flex-direction:column;gap:6px;justify-content:center"><div class="ln" style="width:74%"></div><div class="ln" style="width:42%"></div></div></div>
+      </div>
+    </div>
+  </div>
+</div></div>
+</div>
+
+<div class="dv-grp">B · PROJECTS INDEX</div>
+<div class="dv-opts">
+
+<div class="dv-opt" id="1e"><div class="dv-olabel"><a class="dv-oid" href="#1e">1e</a>Data table — scannable, sortable, holds many small projects</div>
+<div class="dv-card bp" style="width:520px"><i class="cm"></i>
+  <div class="bar"><span class="dot"></span>~/projects<span style="margin-left:auto">24 entries</span></div>
+  <div style="padding:14px 16px;display:flex;flex-direction:column;gap:10px">
+    <div style="display:flex;align-items:baseline;gap:10px"><span class="h2">Projects</span><span class="mono">sort: year ↓ · filter:</span><span class="chipa">all</span><span class="chip">code</span><span class="chip">research</span></div>
+    <div style="display:grid;grid-template-columns:24px 1fr 96px 74px 40px;gap:0 10px;font:400 9px/1 'IBM Plex Mono',monospace;color:#6d7a72;border-bottom:1px solid #24302a;padding-bottom:7px"><span>#</span><span>NAME</span><span>STACK</span><span>ROLE</span><span>YR</span></div>
+    <div style="display:grid;grid-template-columns:24px 1fr 96px 74px 40px;gap:9px 10px;align-items:center" class="mono">
+      <span class="acc">01</span><span class="ln" style="width:86%"></span><span class="ln" style="width:80%"></span><span class="ln" style="width:70%"></span><span>26</span>
+      <span class="acc">02</span><span class="ln" style="width:72%"></span><span class="ln" style="width:64%"></span><span class="ln" style="width:82%"></span><span>26</span>
+      <span class="acc">03</span><span class="ln" style="width:90%"></span><span class="ln" style="width:74%"></span><span class="ln" style="width:60%"></span><span>25</span>
+      <span class="acc">04</span><span class="ln" style="width:66%"></span><span class="ln" style="width:88%"></span><span class="ln" style="width:72%"></span><span>25</span>
+      <span class="acc">05</span><span class="ln" style="width:79%"></span><span class="ln" style="width:58%"></span><span class="ln" style="width:66%"></span><span>24</span>
+      <span class="acc">06</span><span class="ln" style="width:84%"></span><span class="ln" style="width:70%"></span><span class="ln" style="width:76%"></span><span>24</span>
+    </div>
+    <div class="cap" style="margin-top:4px">ROW HOVER → +1 line summary, repo &amp; demo links</div>
+  </div>
+</div></div>
+
+<div class="dv-opt" id="1f"><div class="dv-olabel"><a class="dv-oid" href="#1f">1f</a>Blueprint card grid — image-forward, for deep case studies</div>
+<div class="dv-card bp" style="width:520px"><i class="cm"></i>
+  <div class="bar"><span class="dot"></span>~/projects<span style="margin-left:auto">grid</span></div>
+  <div style="padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:20px">
+    <div class="bp" style="border:1px solid #2b3a2f;padding:11px;display:flex;flex-direction:column;gap:8px"><i class="cm"></i>
+      <div class="ph" style="height:76px">DUOTONE IMG</div><div class="cap">01 · 2026</div><div class="ln" style="width:80%;height:10px"></div><div class="ln" style="width:96%"></div><div class="ln" style="width:64%"></div><div style="display:flex;gap:6px"><span class="chip">repo</span><span class="chip">case study</span></div></div>
+    <div class="bp" style="border:1px solid #2b3a2f;padding:11px;display:flex;flex-direction:column;gap:8px"><i class="cm"></i>
+      <div class="ph" style="height:76px">DUOTONE IMG</div><div class="cap">02 · 2026</div><div class="ln" style="width:70%;height:10px"></div><div class="ln" style="width:90%"></div><div class="ln" style="width:56%"></div><div style="display:flex;gap:6px"><span class="chip">paper</span><span class="chip">demo</span></div></div>
+    <div class="bp" style="border:1px solid #2b3a2f;padding:11px;display:flex;flex-direction:column;gap:8px"><i class="cm"></i>
+      <div class="ph" style="height:76px">DUOTONE IMG</div><div class="cap">03 · 2025</div><div class="ln" style="width:86%;height:10px"></div><div class="ln" style="width:92%"></div><div class="ln" style="width:60%"></div><div style="display:flex;gap:6px"><span class="chip">repo</span></div></div>
+    <div class="bp" style="border:1px solid #2b3a2f;padding:11px;display:flex;flex-direction:column;gap:8px"><i class="cm"></i>
+      <div class="ph" style="height:76px">DUOTONE IMG</div><div class="cap">04 · 2025</div><div class="ln" style="width:74%;height:10px"></div><div class="ln" style="width:88%"></div><div class="ln" style="width:52%"></div><div style="display:flex;gap:6px"><span class="chip">repo</span><span class="chip">write-up</span></div></div>
+  </div>
+</div></div>
+
+<div class="dv-opt" id="1g"><div class="dv-olabel"><a class="dv-oid" href="#1g">1g</a>Hover-reveal list — bare rows left, live preview pinned right</div>
+<div class="dv-card bp" style="width:520px"><i class="cm"></i>
+  <div class="bar"><span class="dot"></span>~/projects<span style="margin-left:auto">[fx] hover reveal</span></div>
+  <div style="display:flex;height:330px">
+    <div style="flex:1;padding:14px 16px;display:flex;flex-direction:column;gap:0;border-right:1px solid #24302a">
+      <div class="cap" style="margin-bottom:10px">SELECT A PROJECT</div>
+      <div style="padding:9px 0;border-top:1px solid #24302a;display:flex;justify-content:space-between;align-items:center"><span class="h2" style="color:#57e08a">Project 01 ◂</span><span class="mono">26</span></div>
+      <div style="padding:9px 0;border-top:1px solid #24302a;display:flex;justify-content:space-between;align-items:center"><span class="h2" style="color:#8b978f">Project 02</span><span class="mono">26</span></div>
+      <div style="padding:9px 0;border-top:1px solid #24302a;display:flex;justify-content:space-between;align-items:center"><span class="h2" style="color:#8b978f">Project 03</span><span class="mono">25</span></div>
+      <div style="padding:9px 0;border-top:1px solid #24302a;display:flex;justify-content:space-between;align-items:center"><span class="h2" style="color:#8b978f">Project 04</span><span class="mono">25</span></div>
+      <div style="padding:9px 0;border-top:1px solid #24302a;border-bottom:1px solid #24302a;display:flex;justify-content:space-between;align-items:center"><span class="h2" style="color:#8b978f">Project 05</span><span class="mono">24</span></div>
+      <div class="cap" style="margin-top:auto">↑↓ keys work too</div>
+    </div>
+    <div style="width:206px;flex:none;padding:14px;display:flex;flex-direction:column;gap:9px">
+      <div class="ph" style="height:104px">PREVIEW</div>
+      <div class="cap">01 / STACK · ROLE · YEAR</div>
+      <div class="ln" style="width:92%"></div><div class="ln" style="width:80%"></div><div class="ln" style="width:88%"></div>
+      <div style="display:flex;gap:6px;margin-top:4px"><span class="chipa">open →</span><span class="chip">repo</span></div>
+    </div>
+  </div>
+</div></div>
+</div>
+
+<div class="dv-grp">C · PROJECT CASE STUDY</div>
+<div class="dv-opts">
+
+<div class="dv-opt" id="1h"><div class="dv-olabel"><a class="dv-oid" href="#1h">1h</a>Long-form read with sticky meta sidebar</div>
+<div class="dv-card bp" style="width:520px"><i class="cm"></i>
+  <div class="bar"><span class="dot"></span>~/projects/01<span style="margin-left:auto">8 min read</span></div>
+  <div style="padding:16px 17px;display:flex;flex-direction:column;gap:12px">
+    <div class="cap">CASE STUDY 01 · 2026</div>
+    <div class="h1" style="font-size:28px">Project title<br>goes here</div>
+    <div class="ph" style="height:96px">HERO — DUOTONE</div>
+    <div style="display:flex;gap:16px">
+      <div style="flex:1;display:flex;flex-direction:column;gap:8px">
+        <div class="h2">01 Context</div><div class="ln" style="width:98%"></div><div class="ln" style="width:94%"></div><div class="ln" style="width:88%"></div>
+        <div class="h2" style="margin-top:6px">02 Approach</div><div class="ln" style="width:96%"></div><div class="ln" style="width:90%"></div><div class="ln" style="width:72%"></div>
+        <div class="h2" style="margin-top:6px">03 Result</div><div class="ln" style="width:92%"></div><div class="ln" style="width:66%"></div>
+      </div>
+      <div style="width:132px;flex:none;border-left:1px solid #24302a;padding-left:12px;display:flex;flex-direction:column;gap:7px" class="mono">
+        <span class="cap">STICKY META</span><span>role —</span><span>stack —</span><span>team —</span><span>period —</span><span class="acc">repo ↗</span><span class="acc">live ↗</span><span class="acc">paper ↗</span>
+        <span class="cap" style="margin-top:8px">ON THIS PAGE</span><span class="acc">· context</span><span>· approach</span><span>· result</span>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<div class="dv-opt" id="1i"><div class="dv-olabel"><a class="dv-oid" href="#1i">1i</a>Spec-sheet — numbered plate, facts before prose</div>
+<div class="dv-card bp" style="width:520px"><i class="cm"></i>
+  <div class="bar"><span class="dot"></span>~/projects/02<span style="margin-left:auto">spec</span></div>
+  <div style="padding:16px 17px;display:flex;flex-direction:column;gap:13px">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end"><span class="h1" style="font-size:26px">Project 02</span><span class="mono">REV 2026.04</span></div>
+    <div class="bp" style="border:1px solid #2b3a2f"><i class="cm"></i>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr">
+        <div style="padding:11px;border-right:1px solid #2b3a2f"><div class="cap">01 DOMAIN</div><div class="ln" style="width:80%;margin-top:7px"></div></div>
+        <div style="padding:11px;border-right:1px solid #2b3a2f"><div class="cap">02 STACK</div><div class="ln" style="width:88%;margin-top:7px"></div></div>
+        <div style="padding:11px"><div class="cap">03 STATUS</div><div class="mono acc" style="margin-top:7px">SHIPPED</div></div>
+        <div style="padding:11px;border-top:1px solid #2b3a2f;border-right:1px solid #2b3a2f"><div class="cap">04 SCALE</div><div class="ln" style="width:70%;margin-top:7px"></div></div>
+        <div style="padding:11px;border-top:1px solid #2b3a2f;border-right:1px solid #2b3a2f"><div class="cap">05 ROLE</div><div class="ln" style="width:82%;margin-top:7px"></div></div>
+        <div style="padding:11px;border-top:1px solid #2b3a2f"><div class="cap">06 LINKS</div><div class="mono acc" style="margin-top:7px">repo ↗</div></div>
+      </div>
+    </div>
+    <div style="display:flex;gap:14px">
+      <div style="flex:1;display:flex;flex-direction:column;gap:7px"><div class="h2">Notes</div><div class="ln" style="width:96%"></div><div class="ln" style="width:90%"></div><div class="ln" style="width:84%"></div><div class="ln" style="width:62%"></div></div>
+      <div class="ph" style="width:168px;height:112px">FIGURE</div>
+    </div>
+    <div class="cap">← 01 PREV · NEXT 03 →</div>
+  </div>
+</div></div>
+
+<div class="dv-opt" id="1j"><div class="dv-olabel"><a class="dv-oid" href="#1j">1j</a>Terminal log — the build narrated as a changelog</div>
+<div class="dv-card bp" style="width:520px"><i class="cm"></i>
+  <div class="bar"><span class="dot"></span>~/projects/03<span style="margin-left:auto">[fx] type-on per entry</span></div>
+  <div style="padding:16px 17px;display:flex;flex-direction:column;gap:12px">
+    <div class="mono"><span class="acc">$</span> git log --project 03</div>
+    <div class="h1" style="font-size:24px">Project 03</div>
+    <div style="display:flex;flex-direction:column;gap:0;border-left:1px solid #2b3a2f;padding-left:14px">
+      <div style="padding:9px 0"><div class="mono acc">◆ 2026.02 — kickoff</div><div class="ln" style="width:92%;margin-top:6px"></div><div class="ln" style="width:70%;margin-top:5px"></div></div>
+      <div style="padding:9px 0"><div class="mono acc">◆ 2026.03 — prototype</div><div class="ln" style="width:88%;margin-top:6px"></div><div class="ph" style="height:64px;margin-top:7px">SCREEN</div></div>
+      <div style="padding:9px 0"><div class="mono acc">◆ 2026.05 — published</div><div class="ln" style="width:84%;margin-top:6px"></div><div class="ln" style="width:58%;margin-top:5px"></div></div>
+    </div>
+    <div style="display:flex;gap:8px"><span class="chipa">repo ↗</span><span class="chip">paper ↗</span><span class="chip">next project →</span></div>
+  </div>
+</div></div>
+</div>
+
+<div class="dv-grp">D · NAVIGATION MODEL</div>
+<div class="dv-opts">
+
+<div class="dv-opt" id="1k"><div class="dv-olabel"><a class="dv-oid" href="#1k">1k</a>Persistent labelled rail, sections numbered</div>
+<div class="dv-card bp" style="width:330px"><i class="cm"></i>
+  <div class="bar"><span class="dot"></span>rail · 168px</div>
+  <div style="display:flex;height:250px">
+    <div style="width:168px;flex:none;border-right:1px solid #24302a;padding:14px 13px;display:flex;flex-direction:column;gap:10px" class="mono">
+      <span class="acc" style="font:600 13px/1 'Barlow Condensed',sans-serif;letter-spacing:.14em">P. CARDONA</span>
+      <span style="color:#57e08a">01 HOME ◂</span><span>02 WORK</span><span>03 PUBLICATIONS</span><span>04 CV</span><span>05 WRITING</span><span>06 ABOUT</span><span>07 NOW / USES</span>
+      <span style="margin-top:auto">08 CONTACT</span><span class="cap">EN · ES</span>
+    </div>
+    <div style="flex:1;padding:14px 12px;display:flex;flex-direction:column;gap:8px"><div class="ln" style="width:80%;height:11px"></div><div class="ln" style="width:94%"></div><div class="ln" style="width:88%"></div><div class="ln" style="width:70%"></div></div>
+  </div>
+</div></div>
+
+<div class="dv-opt" id="1l"><div class="dv-olabel"><a class="dv-oid" href="#1l">1l</a>Icon rail, expands on hover — max room for content</div>
+<div class="dv-card bp" style="width:330px"><i class="cm"></i>
+  <div class="bar"><span class="dot"></span>rail · 48 → 168px</div>
+  <div style="display:flex;height:250px">
+    <div style="width:48px;flex:none;border-right:1px solid #24302a;padding:14px 0;display:flex;flex-direction:column;align-items:center;gap:14px" class="mono"><span class="acc">▣</span><span class="acc">▤</span><span>▥</span><span>▦</span><span>▧</span><span style="margin-top:auto">✉</span></div>
+    <div style="width:120px;flex:none;border-right:1px solid #24302a;padding:14px 11px;display:flex;flex-direction:column;gap:14px;background:rgba(87,224,138,.05)" class="mono"><span class="cap">HOVER</span><span class="acc">work</span><span>papers</span><span>cv</span><span>writing</span><span style="margin-top:auto">contact</span></div>
+    <div style="flex:1;padding:14px 12px;display:flex;flex-direction:column;gap:8px"><div class="ln" style="width:90%"></div><div class="ln" style="width:76%"></div><div class="ln" style="width:84%"></div></div>
+  </div>
+</div></div>
+
+<div class="dv-opt" id="1m"><div class="dv-olabel"><a class="dv-oid" href="#1m">1m</a>Rail + bottom status line (route, build, shortcuts)</div>
+<div class="dv-card bp" style="width:330px"><i class="cm"></i>
+  <div class="bar"><span class="dot"></span>rail + statusline</div>
+  <div style="display:flex;height:226px">
+    <div style="width:120px;flex:none;border-right:1px solid #24302a;padding:13px 11px;display:flex;flex-direction:column;gap:9px" class="mono"><span class="acc">P.C</span><span class="acc">work</span><span>papers</span><span>cv</span><span>about</span></div>
+    <div style="flex:1;padding:13px 12px;display:flex;flex-direction:column;gap:8px"><div class="ln" style="width:86%;height:11px"></div><div class="ln" style="width:92%"></div><div class="ln" style="width:74%"></div></div>
+  </div>
+  <div style="border-top:1px solid #24302a;padding:7px 11px;display:flex;justify-content:space-between" class="mono"><span class="acc">~/projects/01</span><span>j/k move · / search · ? help</span></div>
+</div></div>
+</div>
+
+<div class="dv-grp">E · SUPPORTING SCREENS — one pass each</div>
+<div class="dv-opts">
+
+<div class="dv-opt" id="1n"><div class="dv-olabel"><a class="dv-oid" href="#1n">1n</a>About</div>
+<div class="dv-card bp" style="width:330px"><i class="cm"></i>
+  <div class="bar"><span class="dot"></span>~/about</div>
+  <div style="padding:14px;display:flex;flex-direction:column;gap:10px">
+    <div style="display:flex;gap:12px"><div class="ph" style="width:88px;height:100px">PORTRAIT</div><div style="flex:1;display:flex;flex-direction:column;gap:7px"><div class="h2">Who I am</div><div class="ln" style="width:96%"></div><div class="ln" style="width:88%"></div><div class="ln" style="width:92%"></div><div class="ln" style="width:60%"></div></div></div>
+    <div class="cap">CERTIFICATIONS</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap"><span class="chip">cert 01</span><span class="chip">cert 02</span><span class="chipa">cert 03</span><span class="chip">cert 04</span></div>
+    <div class="cap">TOOLS I ACTUALLY USE</div><div class="ln" style="width:90%"></div><div class="ln" style="width:70%"></div>
+  </div>
+</div></div>
+
+<div class="dv-opt" id="1o"><div class="dv-olabel"><a class="dv-oid" href="#1o">1o</a>Résumé / CV — readable on screen, one-click PDF</div>
+<div class="dv-card bp" style="width:330px"><i class="cm"></i>
+  <div class="bar"><span class="dot"></span>~/cv<span style="margin-left:auto" class="acc">↓ PDF</span></div>
+  <div style="padding:14px;display:flex;flex-direction:column;gap:10px">
+    <div style="display:flex;justify-content:space-between;align-items:baseline"><span class="h2">Curriculum</span><span class="chipa">download</span></div>
+    <div class="cap">EXPERIENCE</div>
+    <div style="display:grid;grid-template-columns:56px 1fr;gap:8px 10px" class="mono"><span class="acc">24—26</span><span class="ln" style="width:90%"></span><span class="acc">22—24</span><span class="ln" style="width:80%"></span><span class="acc">20—22</span><span class="ln" style="width:86%"></span></div>
+    <div class="cap">EDUCATION</div>
+    <div style="display:grid;grid-template-columns:56px 1fr;gap:8px 10px" class="mono"><span class="acc">18—22</span><span class="ln" style="width:84%"></span></div>
+    <div class="cap">PUBLICATIONS · 4</div><div class="ln" style="width:92%"></div><div class="ln" style="width:78%"></div>
+  </div>
+</div></div>
+
+<div class="dv-opt" id="1p"><div class="dv-olabel"><a class="dv-oid" href="#1p">1p</a>Writing index</div>
+<div class="dv-card bp" style="width:330px"><i class="cm"></i>
+  <div class="bar"><span class="dot"></span>~/writing<span style="margin-left:auto">12 posts</span></div>
+  <div style="padding:14px;display:flex;flex-direction:column;gap:0">
+    <div class="cap" style="margin-bottom:9px">NOTES &amp; PAPERS</div>
+    <div style="padding:9px 0;border-top:1px solid #24302a;display:flex;gap:10px"><span class="mono acc">2026.06</span><span class="ln" style="flex:1"></span></div>
+    <div style="padding:9px 0;border-top:1px solid #24302a;display:flex;gap:10px"><span class="mono">2026.03</span><span class="ln" style="flex:1;width:80%"></span></div>
+    <div style="padding:9px 0;border-top:1px solid #24302a;display:flex;gap:10px"><span class="mono">2025.11</span><span class="ln" style="flex:1"></span></div>
+    <div style="padding:9px 0;border-top:1px solid #24302a;display:flex;gap:10px"><span class="mono">2025.08</span><span class="ln" style="flex:1;width:70%"></span></div>
+    <div style="padding:9px 0;border-top:1px solid #24302a;border-bottom:1px solid #24302a;display:flex;gap:10px"><span class="mono">2025.04</span><span class="ln" style="flex:1;width:88%"></span></div>
+    <div style="display:flex;gap:6px;margin-top:10px"><span class="chipa">all</span><span class="chip">research</span><span class="chip">notes</span></div>
+  </div>
+</div></div>
+
+<div class="dv-opt" id="1q"><div class="dv-olabel"><a class="dv-oid" href="#1q">1q</a>Blog post — measure capped for reading</div>
+<div class="dv-card bp" style="width:330px"><i class="cm"></i>
+  <div class="bar"><span class="dot"></span>~/writing/post<span style="margin-left:auto">6 min</span></div>
+  <div style="padding:14px;display:flex;flex-direction:column;gap:9px">
+    <div class="cap">2026.06 · RESEARCH</div>
+    <div class="h1" style="font-size:20px">Post title on<br>two lines</div>
+    <div class="ln" style="width:96%"></div><div class="ln" style="width:92%"></div><div class="ln" style="width:98%"></div><div class="ln" style="width:64%"></div>
+    <div class="bp" style="border:1px solid #2b3a2f;padding:9px;background:rgba(87,224,138,.04)"><i class="cm"></i><div class="mono acc">$ code block</div><div class="ln" style="width:70%;margin-top:6px"></div></div>
+    <div class="ln" style="width:94%"></div><div class="ln" style="width:86%"></div>
+    <div class="cap" style="margin-top:4px">← PREV POST · NEXT →</div>
+  </div>
+</div></div>
+
+<div class="dv-opt" id="1r"><div class="dv-olabel"><a class="dv-oid" href="#1r">1r</a>Contact</div>
+<div class="dv-card bp" style="width:330px"><i class="cm"></i>
+  <div class="bar"><span class="dot"></span>~/contact</div>
+  <div style="padding:16px 14px;display:flex;flex-direction:column;gap:11px">
+    <div class="mono"><span class="acc">$</span> mail -s "hello"</div>
+    <div class="h1" style="font-size:22px">Get in touch</div>
+    <div class="mono" style="width:88%">Best for hiring, collaboration or a paper you want to talk about.</div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px">
+      <div style="border:1px solid #2b3a2f;padding:8px 10px" class="mono">email —</div>
+      <div style="border:1px solid #2b3a2f;padding:8px 10px" class="mono">github —</div>
+      <div style="border:1px solid #2b3a2f;padding:8px 10px" class="mono">linkedin —</div>
+      <div style="border:1px solid #2b3a2f;padding:8px 10px" class="mono">orcid / scholar —</div>
+    </div>
+    <div style="display:flex;gap:8px"><span class="chipa">copy email</span><span class="chip">download cv</span></div>
+  </div>
+</div></div>
+
+<div class="dv-opt" id="1s"><div class="dv-olabel"><a class="dv-oid" href="#1s">1s</a>Now / uses</div>
+<div class="dv-card bp" style="width:330px"><i class="cm"></i>
+  <div class="bar"><span class="dot"></span>~/now<span style="margin-left:auto">upd 2026.09</span></div>
+  <div style="padding:14px;display:flex;flex-direction:column;gap:10px">
+    <div class="h2">Now</div>
+    <div class="ln" style="width:94%"></div><div class="ln" style="width:80%"></div>
+    <div class="cap">READING / LEARNING</div><div class="ln" style="width:88%"></div><div class="ln" style="width:66%"></div>
+    <div class="cap">SETUP</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div style="border:1px solid #2b3a2f;padding:8px" class="mono">editor —</div>
+      <div style="border:1px solid #2b3a2f;padding:8px" class="mono">machine —</div>
+      <div style="border:1px solid #2b3a2f;padding:8px" class="mono">shell —</div>
+      <div style="border:1px solid #2b3a2f;padding:8px" class="mono">langs —</div>
+    </div>
+  </div>
+</div></div>
+
+<div class="dv-opt" id="1t"><div class="dv-olabel"><a class="dv-oid" href="#1t">1t</a>404</div>
+<div class="dv-card bp" style="width:330px"><i class="cm"></i>
+  <div class="bar"><span class="dot"></span>~/?<span style="margin-left:auto">404</span></div>
+  <div style="padding:26px 14px;display:flex;flex-direction:column;gap:11px;align-items:flex-start;min-height:170px">
+    <div class="mono"><span class="acc">$</span> cd /that/page</div>
+    <div class="h1" style="font-size:44px;color:#57e08a">404</div>
+    <div class="mono">no such file or directory</div>
+    <div style="display:flex;gap:8px;margin-top:6px"><span class="chipa">cd ~</span><span class="chip">projects</span><span class="chip">cv</span></div>
+  </div>
+</div></div>
+</div>
+
+<p class="dv-next">Try next: "build out <a class="dv-oid" href="#1b">1b</a> with the table from <a class="dv-oid" href="#1e">1e</a>" · "make the case study more like <a class="dv-oid" href="#1i">1i</a> but with a hero" · "3 more home directions, denser" · "add a publications-only screen"</p>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}"></script>
+</body>
+</html>

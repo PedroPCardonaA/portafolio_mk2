@@ -1,0 +1,57 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import Prose from '../../layouts/Prose.astro';
+import MetaSidebar from '../../components/MetaSidebar.astro';
+import Duotone from '../../components/Duotone.astro';
+
+export async function getStaticPaths() {
+  const projects = (await getCollection('projects', (p: CollectionEntry<'projects'>) => !p.data.draft))
+    .sort((a: CollectionEntry<'projects'>, b: CollectionEntry<'projects'>) => a.data.order - b.data.order);
+
+  return projects.map((entry: CollectionEntry<'projects'>, i: number) => ({
+    params: { slug: entry.id },
+    props: { entry, prev: projects[i - 1] ?? null, next: projects[i + 1] ?? null },
+  }));
+}
+
+const { entry, prev, next } = Astro.props;
+const { Content, headings } = await render(entry);
+---
+
+<Prose title={`${entry.data.title} — Pedro Cardona`} description={entry.data.summary} path={`/projects/${entry.id}`}>
+  <p class="kicker cap">Case study {String(entry.data.order).padStart(2, '0')} · {entry.data.year}</p>
+  <h1>{entry.data.title}</h1>
+  {entry.data.cover && <Duotone src={entry.data.cover} alt="" />}
+  <div class="body">
+    <article>
+      <Content />
+    </article>
+    <MetaSidebar data={entry.data} headings={headings} />
+  </div>
+  <nav class="pager">
+    {prev ? <a href={`/projects/${prev.id}`}>← {prev.data.title}</a> : <span />}
+    {next ? <a href={`/projects/${next.id}`}>{next.data.title} →</a> : <span />}
+  </nav>
+</Prose>
+
+<style>
+  .kicker { margin: 0 0 var(--s-2); }
+  h1 { margin-bottom: var(--s-5); }
+  .body { display: flex; gap: var(--s-6); margin-top: var(--s-6); align-items: flex-start; }
+  article { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: var(--s-3); }
+  article :global(h2) { margin-top: var(--s-7); font-size: 20px; }
+  .pager {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s-4);
+    margin-top: var(--s-8);
+    padding-top: var(--s-4);
+    border-top: 1px solid var(--line);
+    font: 400 13px var(--font-mono);
+    color: var(--acc);
+  }
+
+  @media (max-width: 1000px) {
+    .body { flex-direction: column; }
+  }
+</style>

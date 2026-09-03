@@ -1,0 +1,36 @@
+---
+import Rail from '../components/Rail.astro';
+import StatusLine from '../components/StatusLine.astro';
+import '../styles/tokens.css';
+import '../styles/base.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  path?: string;
+  hint?: string;
+}
+
+const { title, description, path, hint } = Astro.props;
+const route = path ?? Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  {description && <meta name="description" content={description} />}
+  <link rel="icon" href="/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500&display=swap" />
+</head>
+<body>
+  <Rail path={route} />
+  <main>
+    <slot />
+  </main>
+  <StatusLine route={route} hint={hint} />
+</body>
+</html>

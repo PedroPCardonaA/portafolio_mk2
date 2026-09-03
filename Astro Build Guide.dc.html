@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="stylesheet" href="_ds/industry-490f025c-cd96-468b-8e5f-7b3d1a7205bc/styles.css">
+<script src="_ds/industry-490f025c-cd96-468b-8e5f-7b3d1a7205bc/_ds_bundle.js"></script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500&display=swap">
+<style>
+body{margin:0;background:#0a0b0a;color:#d7ded8;font-family:'Barlow',system-ui,sans-serif}
+a{color:#57e08a;text-decoration:none;border-bottom:1px solid rgba(87,224,138,.35)}
+a:hover{color:#8ff0b4;border-bottom-color:#8ff0b4}
+.bp{position:relative}
+.bp:before,.bp:after,.bp>i.cm:before,.bp>i.cm:after{content:'+';position:absolute;font:400 10px/1 'IBM Plex Mono',monospace;color:#4a6b56}
+.bp:before{left:-4px;top:-5px}.bp:after{right:-4px;top:-5px}
+.bp>i.cm{position:absolute;inset:0;pointer-events:none}
+.bp>i.cm:before{left:-4px;bottom:-5px}.bp>i.cm:after{right:-4px;bottom:-5px}
+.mono{font:400 12px/1.6 'IBM Plex Mono',ui-monospace,monospace}
+.cap{font:500 10px/1.4 'IBM Plex Mono',monospace;color:#6d7a72;letter-spacing:.16em;text-transform:uppercase}
+.h1{font:700 46px/0.95 'Barlow Condensed',sans-serif;letter-spacing:.01em;text-transform:uppercase;color:#e8efe9;margin:0}
+.h2{font:600 27px/1 'Barlow Condensed',sans-serif;letter-spacing:.05em;text-transform:uppercase;color:#e8efe9;margin:0}
+.h3{font:600 17px/1.1 'Barlow Condensed',sans-serif;letter-spacing:.07em;text-transform:uppercase;color:#d7ded8;margin:0}
+.p{font:400 14.5px/1.65 'Barlow',sans-serif;color:#b3bdb6;margin:0;max-width:70ch;text-wrap:pretty}
+pre{margin:0;font:400 11.5px/1.65 'IBM Plex Mono',monospace;color:#c6d3c9;white-space:pre;overflow-x:auto;padding:14px 16px;border:1px solid #2b3a2f;background:rgba(87,224,138,.04);max-width:100%}
+.bp,section,pre{min-width:0}
+section>div,section>div>div{min-width:0}
+code{font:400 12px/1.4 'IBM Plex Mono',monospace;color:#57e08a}
+.chip{border:1px solid #2b3a2f;padding:4px 8px;font:400 10.5px/1 'IBM Plex Mono',monospace;color:#8b978f}
+.acc{color:#57e08a}
+</style></helmet>
+
+<div style="max-width:1020px;margin:0 auto;padding:56px 40px 96px;display:flex;flex-direction:column;gap:56px">
+
+<header style="display:flex;flex-direction:column;gap:16px">
+  <div class="cap">BUILD GUIDE · REV 2026.09 · PedroPCardonaA/portafolio_mk2</div>
+  <h1 class="h1">Portfolio<br>implementation guide</h1>
+  <p class="p">The spec for the eight approved wireframes — <a href="Portfolio Wireframes.dc.html">1a, 1g, 1h, 1k, 1n, 1r, 1s, 1t</a> — written as an Astro project. Tokens, file tree, content schemas, per-page anatomy and the motion rules. Everything here is static-first: no client framework, one CSS file of tokens, JS only for the four effects in §7.</p>
+  <div style="display:flex;gap:8px;flex-wrap:wrap"><span class="chip">Astro 5 · static output</span><span class="chip">Content Collections</span><span class="chip">MDX for case studies</span><span class="chip">zero UI framework</span></div>
+</header>
+
+<section class="bp" style="border:1px solid #2b3a2f;padding:22px 24px;display:flex;flex-direction:column;gap:14px"><i class="cm"></i>
+  <div class="cap">01 · STACK DECISIONS</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px 26px">
+    <div style="display:flex;flex-direction:column;gap:5px"><span class="h3">Output</span><p class="p" style="font-size:13.5px"><code>output: 'static'</code> — the whole site prerenders. Deploy anywhere (Pages, Netlify, Vercel).</p></div>
+    <div style="display:flex;flex-direction:column;gap:5px"><span class="h3">Content</span><p class="p" style="font-size:13.5px">Projects, publications and posts are Content Collections in <code>src/content/</code>, typed with zod. No CMS.</p></div>
+    <div style="display:flex;flex-direction:column;gap:5px"><span class="h3">Styling</span><p class="p" style="font-size:13.5px">One <code>tokens.css</code> + component-scoped <code>&lt;style&gt;</code> blocks. No Tailwind needed; if you add it, map the tokens in <code>theme.extend</code>.</p></div>
+    <div style="display:flex;flex-direction:column;gap:5px"><span class="h3">Images</span><p class="p" style="font-size:13.5px"><code>astro:assets</code> <code>&lt;Image&gt;</code> for covers. The duotone wash is CSS, not baked into the file.</p></div>
+  </div>
+</section>
+
+<section style="display:flex;flex-direction:column;gap:16px">
+  <div class="cap">02 · TOKENS — <code>src/styles/tokens.css</code></div>
+  <p class="p">Every value the wireframes use. Nothing else gets hard-coded downstream. Green is the only hue; contrast targets are noted so the "must be readable" requirement survives implementation.</p>
+  <div style="display:flex;gap:22px;flex-wrap:wrap">
+    <div style="flex:1;min-width:420px"><pre>:root {
+  /* ground + structure */
+  --bg:        #0a0b0a;   /* page */
+  --surface:   #0d100e;   /* panels, rail */
+  --line:      #24302a;   /* hairline, structural */
+  --line-2:    #2b3a2f;   /* hairline, framed objects */
+
+  /* type — 12.6:1 and 6.1:1 on --bg */
+  --text:      #d7ded8;
+  --text-dim:  #8b978f;
+  --text-mute: #6d7a72;   /* labels only, never paragraphs */
+
+  /* accent */
+  --acc:       #57e08a;   /* 10.9:1 on --bg */
+  --acc-hover: #8ff0b4;
+  --acc-press: #3cb96c;
+  --acc-line:  #4a6b56;   /* registration marks */
+  --acc-wash:  rgba(87,224,138,.05);
+
+  /* type */
+  --font-head: 'Barlow Condensed', sans-serif;
+  --font-body: 'Barlow', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  /* rhythm — 4px base */
+  --s-1:4px; --s-2:8px; --s-3:12px; --s-4:16px;
+  --s-5:24px; --s-6:32px; --s-7:48px; --s-8:72px;
+
+  --rail: 168px;          /* 1k */
+  --measure: 68ch;        /* prose cap */
+  --radius: 0;            /* square corners, always */
+}</pre></div>
+    <div style="width:250px;display:flex;flex-direction:column;gap:10px">
+      <div class="cap">READABILITY FLOOR</div>
+      <p class="p" style="font-size:13px">Body copy never below 15px / 1.65. <code>--text-mute</code> is for uppercase mono labels at 10–11px only. Accent green is never used for paragraph text on tinted fills — use <code>--text</code> there.</p>
+      <div class="cap">FRAME RULE</div>
+      <p class="p" style="font-size:13px">Any framed object (card, figure, primary button) carries a 1px <code>--line-2</code> border and four <code>+</code> marks. Never rounded, never surface-filled — the one exception is the primary button's solid accent fill.</p>
+    </div>
+  </div>
+</section>
+
+<section style="display:flex;flex-direction:column;gap:16px">
+  <div class="cap">03 · FILE TREE</div>
+  <pre>src/
+├─ layouts/
+│  ├─ Base.astro          shell: &lt;head&gt;, tokens, Rail, StatusLine, Scanlines
+│  └─ Prose.astro         Base + capped measure, used by posts &amp; case studies
+├─ components/
+│  ├─ Rail.astro          1k — persistent numbered nav
+│  ├─ StatusLine.astro    bottom route/shortcut strip
+│  ├─ Blueprint.astro     &lt;slot/&gt; wrapped in border + 4 corner marks
+│  ├─ Chip.astro          tag / filter pill (variant: default | accent)
+│  ├─ Prompt.astro        "$ command" line, optional type-on
+│  ├─ Duotone.astro       image wrapper, accent wash
+│  ├─ ProjectList.astro   1g — keyboard/hover list, emits selection
+│  ├─ ProjectPreview.astro 1g — pinned right panel
+│  ├─ MetaSidebar.astro   1h — sticky meta + on-this-page
+│  └─ Scanlines.astro     fixed CRT overlay, respects reduced-motion
+├─ content/
+│  ├─ config.ts           zod schemas (§4)
+│  ├─ projects/*.mdx      one file per project / case study
+│  ├─ publications/*.md   one file per paper
+│  └─ posts/*.mdx
+├─ pages/
+│  ├─ index.astro                 1a — terminal intro + selected work
+│  ├─ projects/index.astro        1g — list + preview
+│  ├─ projects/[...slug].astro    1h — case study
+│  ├─ about.astro                 1n
+│  ├─ contact.astro               1r
+│  ├─ now.astro                   1s
+│  ├─ 404.astro                   1t
+│  └─ cv.astro                    (later — reuses 1n's two-column grid)
+└─ styles/
+   ├─ tokens.css
+   └─ base.css            resets, focus ring, ::selection, prose rules
+public/
+├─ cv.pdf
+└─ fonts/                 self-host Barlow + Plex Mono; drop the Google link</pre>
+</section>
+
+<section style="display:flex;flex-direction:column;gap:16px">
+  <div class="cap">04 · CONTENT SCHEMAS — <code>src/content/config.ts</code></div>
+  <p class="p">The schema is the contract between your writing and the layouts. Add a project by adding a file; the home page, index and case-study route all pick it up.</p>
+  <pre>import { defineCollection, z } from 'astro:content';
+
+const projects = defineCollection({
+  type: 'content',
+  schema: ({ image }) =&gt; z.object({
+    title: z.string(),
+    order: z.number(),                     // index sort, ascending
+    year: z.number(),
+    summary: z.string().max(180),          // 1g preview + 1a row
+    stack: z.array(z.string()),
+    role: z.string(),
+    period: z.string().optional(),         // "2026.02 — 2026.05"
+    status: z.enum(['shipped','active','archived']).default('shipped'),
+    cover: image().optional(),
+    links: z.object({
+      repo:  z.string().url().optional(),
+      live:  z.string().url().optional(),
+      paper: z.string().url().optional(),
+    }).default({}),
+    featured: z.boolean().default(false),   // shows on 1a
+    draft: z.boolean().default(false),
+  }),
+});
+
+const publications = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    authors: z.array(z.string()),
+    venue: z.string(),
+    year: z.number(),
+    doi: z.string().optional(),
+    pdf: z.string().optional(),
+    kind: z.enum(['journal','conference','preprint','thesis']),
+  }),
+});
+
+const posts = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    date: z.date(),
+    tag: z.enum(['research','notes']),
+    summary: z.string().optional(),
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = { projects, publications, posts };</pre>
+</section>
+
+<section style="display:flex;flex-direction:column;gap:20px">
+  <div class="cap">05 · PAGE ANATOMY</div>
+  <p class="p">Each approved wireframe, broken into the components and data it needs. Build them in this order — <code>1k</code> first, since every other page mounts inside it.</p>
+
+  <div class="bp" style="border:1px solid #2b3a2f;padding:20px 22px;display:flex;flex-direction:column;gap:12px"><i class="cm"></i>
+    <div style="display:flex;align-items:baseline;gap:12px"><span class="h2">1k</span><span class="h3">Rail + shell</span><span class="mono" style="margin-left:auto;color:#6d7a72">Base.astro · Rail.astro · StatusLine.astro</span></div>
+    <p class="p">Fixed <code>168px</code> rail, full viewport height, <code>--surface</code> ground, 1px right hairline. Items are numbered <code>01…08</code> in mono, uppercase; the active route is <code>--acc</code> with a <code>◂</code> marker. Contact sits pushed to the bottom via <code>margin-top:auto</code>, locale switch below it.</p>
+    <pre>--- // src/components/Rail.astro
+const nav = [
+  ['01','Home','/'], ['02','Work','/projects'], ['03','Publications','/publications'],
+  ['04','CV','/cv'], ['05','Writing','/writing'], ['06','About','/about'], ['07','Now / Uses','/now'],
+];
+const { path } = Astro.props;
+const active = (href) =&gt; href === '/' ? path === '/' : path.startsWith(href);
+---
+&lt;nav aria-label="Primary"&gt;
+  &lt;a class="brand" href="/"&gt;P. Cardona&lt;/a&gt;
+  &lt;ul&gt;
+    {nav.map(([n, label, href]) =&gt; (
+      &lt;li&gt;&lt;a href={href} aria-current={active(href) ? 'page' : undefined}&gt;
+        &lt;span class="num"&gt;{n}&lt;/span&gt;{label}
+      &lt;/a&gt;&lt;/li&gt;
+    ))}
+  &lt;/ul&gt;
+  &lt;a class="foot" href="/contact"&gt;&lt;span class="num"&gt;08&lt;/span&gt;Contact&lt;/a&gt;
+&lt;/nav&gt;</pre>
+    <p class="p" style="font-size:13.5px"><span class="acc">Responsive:</span> under 860px the rail collapses to a 48px top bar with a disclosure button; the numbered list becomes a full-screen sheet. Never a hamburger-only nav — keep the numbers visible.</p>
+  </div>
+
+  <div class="bp" style="border:1px solid #2b3a2f;padding:20px 22px;display:flex;flex-direction:column;gap:12px"><i class="cm"></i>
+    <div style="display:flex;align-items:baseline;gap:12px"><span class="h2">1a</span><span class="h3">Home — terminal intro, then work</span><span class="mono" style="margin-left:auto;color:#6d7a72">pages/index.astro</span></div>
+    <p class="p">Two bands. Band one is <code>100svh</code> (not <code>vh</code> — mobile browser chrome), left-aligned at 46px inset: <code>$ whoami</code> prompt, name at <code>clamp(38px, 7vw, 76px)</code> Barlow Condensed, one-line pitch, three chips, then a <code>▌ scroll ↓</code> cue. Band two is the rail + featured work rows.</p>
+    <pre>--- // src/pages/index.astro
+import Base from '../layouts/Base.astro';
+import Prompt from '../components/Prompt.astro';
+import { getCollection } from 'astro:content';
+
+const featured = (await getCollection('projects', p =&gt; !p.data.draft &amp;&amp; p.data.featured))
+  .sort((a, b) =&gt; a.data.order - b.data.order);
+---
+&lt;Base title="Pedro Cardona — engineer, researcher" path="/"&gt;
+  &lt;section class="boot"&gt;
+    &lt;Prompt cmd="whoami" typeOn /&gt;
+    &lt;h1&gt;Pedro Cardona&lt;/h1&gt;
+    &lt;p class="pitch"&gt;Engineer · research — CV, projects and publications in one readable place.&lt;/p&gt;
+    &lt;ul class="chips"&gt;…&lt;/ul&gt;
+    &lt;a class="cue" href="#work"&gt;▌ scroll ↓&lt;/a&gt;
+  &lt;/section&gt;
+
+  &lt;section id="work" class="work"&gt;
+    &lt;h2&gt;Selected work&lt;/h2&gt;
+    &lt;ul&gt;{featured.map(p =&gt; (
+      &lt;li&gt;&lt;a href={`/projects/${p.slug}`}&gt;
+        &lt;span&gt;{p.data.title}&lt;/span&gt;&lt;span class="mono"&gt;{p.data.year}&lt;/span&gt;
+      &lt;/a&gt;&lt;/li&gt;
+    ))}&lt;/ul&gt;
+    &lt;a href="/projects"&gt;All projects →&lt;/a&gt;
+  &lt;/section&gt;
+&lt;/Base&gt;</pre>
+    <p class="p" style="font-size:13.5px"><span class="acc">Note:</span> the name must be real text in the <code>&lt;h1&gt;</code> from first paint — the type-on effect animates a mask/character reveal over already-present text, never types into an empty node (SEO + no-JS + screen readers).</p>
+  </div>
+
+  <div class="bp" style="border:1px solid #2b3a2f;padding:20px 22px;display:flex;flex-direction:column;gap:12px"><i class="cm"></i>
+    <div style="display:flex;align-items:baseline;gap:12px"><span class="h2">1g</span><span class="h3">Projects index — list + pinned preview</span><span class="mono" style="margin-left:auto;color:#6d7a72">pages/projects/index.astro</span></div>
+    <p class="p">Left column: bare rows, <code>1px</code> top hairline each, title in Barlow Condensed 20px, year in mono right-aligned. Right column: <code>206px</code>+ sticky preview — cover, meta line, summary, two links. Hover, focus and <code>↑↓</code> all set the same selected index.</p>
+    <pre>&lt;!-- projects/index.astro — progressive enhancement --&gt;
+&lt;div class="index" data-selected="0"&gt;
+  &lt;ul class="rows"&gt;
+    {projects.map((p, i) =&gt; (
+      &lt;li&gt;&lt;a href={`/projects/${p.slug}`} data-i={i}
+             aria-describedby="preview"&gt;{p.data.title}&lt;/a&gt;&lt;/li&gt;
+    ))}
+  &lt;/ul&gt;
+  &lt;aside id="preview" aria-live="polite"&gt;
+    {projects.map((p, i) =&gt; &lt;article data-i={i} hidden={i !== 0}&gt;…&lt;/article&gt;)}
+  &lt;/aside&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+  const root = document.querySelector('.index');
+  const links = [...root.querySelectorAll('a[data-i]')];
+  const panes = [...root.querySelectorAll('article[data-i]')];
+  const select = (i) =&gt; {
+    i = Math.max(0, Math.min(links.length - 1, i));
+    root.dataset.selected = i;
+    panes.forEach(p =&gt; p.hidden = +p.dataset.i !== i);
+  };
+  links.forEach((a, i) =&gt; {
+    a.addEventListener('mouseenter', () =&gt; select(i));
+    a.addEventListener('focus', () =&gt; select(i));
+  });
+  addEventListener('keydown', (e) =&gt; {
+    if (e.key === 'j' || e.key === 'ArrowDown') links[Math.min(+root.dataset.selected + 1, links.length - 1)].focus();
+    if (e.key === 'k' || e.key === 'ArrowUp')   links[Math.max(+root.dataset.selected - 1, 0)].focus();
+  });
+&lt;/script&gt;</pre>
+    <p class="p" style="font-size:13.5px">Every row is a real <code>&lt;a&gt;</code>, so the page works with JS off — all previews render, the first is shown, the rest are <code>hidden</code>. Below 860px drop the preview column entirely and inline the summary under each row.</p>
+  </div>
+
+  <div class="bp" style="border:1px solid #2b3a2f;padding:20px 22px;display:flex;flex-direction:column;gap:12px"><i class="cm"></i>
+    <div style="display:flex;align-items:baseline;gap:12px"><span class="h2">1h</span><span class="h3">Case study — prose + sticky meta</span><span class="mono" style="margin-left:auto;color:#6d7a72">pages/projects/[...slug].astro</span></div>
+    <p class="p">Kicker, title, duotone hero, then a two-column body: prose capped at <code>--measure</code>, and a <code>132px</code> sticky sidebar (role, stack, team, period, repo/live/paper, on-this-page). Numbered <code>h2</code>s — <code>01 Context / 02 Approach / 03 Result</code> — are authored in the MDX, not hard-coded.</p>
+    <pre>--- // src/pages/projects/[...slug].astro
+import { getCollection } from 'astro:content';
+import Prose from '../../layouts/Prose.astro';
+import MetaSidebar from '../../components/MetaSidebar.astro';
+import Duotone from '../../components/Duotone.astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects', p =&gt; !p.data.draft);
+  return projects.map((entry, i) =&gt; ({
+    params: { slug: entry.slug },
+    props: { entry, prev: projects[i - 1] ?? null, next: projects[i + 1] ?? null },
+  }));
+}
+const { entry, prev, next } = Astro.props;
+const { Content, headings } = await entry.render();
+---
+&lt;Prose title={entry.data.title} path="/projects"&gt;
+  &lt;p class="kicker"&gt;Case study {String(entry.data.order).padStart(2,'0')} · {entry.data.year}&lt;/p&gt;
+  &lt;h1&gt;{entry.data.title}&lt;/h1&gt;
+  {entry.data.cover &amp;&amp; &lt;Duotone src={entry.data.cover} alt="" /&gt;}
+  &lt;div class="body"&gt;
+    &lt;article&gt;&lt;Content /&gt;&lt;/article&gt;
+    &lt;MetaSidebar data={entry.data} headings={headings} /&gt;
+  &lt;/div&gt;
+  &lt;nav class="pager"&gt;…prev / next…&lt;/nav&gt;
+&lt;/Prose&gt;</pre>
+    <p class="p" style="font-size:13.5px">Sidebar is <code>position:sticky; top:var(--s-5)</code>; on-this-page highlights with an <code>IntersectionObserver</code> over <code>headings</code>. Under 1000px it moves above the prose as a flat meta table.</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px">
+    <div class="bp" style="border:1px solid #2b3a2f;padding:18px 20px;display:flex;flex-direction:column;gap:10px"><i class="cm"></i>
+      <div style="display:flex;align-items:baseline;gap:10px"><span class="h2">1n</span><span class="h3">About</span></div>
+      <p class="p" style="font-size:13.5px">Two-column: <code>88px</code> framed portrait + bio prose. Then two label-led blocks — <code>CERTIFICATIONS</code> as chips, <code>TOOLS I ACTUALLY USE</code> as a comma run. Data lives in <code>src/data/about.json</code> so the page is markup-only.</p>
+      <pre>{about.certs.map(c =&gt; &lt;Chip variant={c.current ? 'accent' : 'default'}&gt;{c.name}&lt;/Chip&gt;)}</pre>
+    </div>
+    <div class="bp" style="border:1px solid #2b3a2f;padding:18px 20px;display:flex;flex-direction:column;gap:10px"><i class="cm"></i>
+      <div style="display:flex;align-items:baseline;gap:10px"><span class="h2">1r</span><span class="h3">Contact</span></div>
+      <p class="p" style="font-size:13.5px"><code>$ mail -s "hello"</code> prompt, heading, one clarifying line, then four bordered rows (email, GitHub, LinkedIn, ORCID/Scholar) — each an <code>&lt;a&gt;</code>, whole row clickable. No form, no backend. <code>copy email</code> uses <code>navigator.clipboard</code> and swaps its label to <code>copied ✓</code> for 2s.</p>
+      <pre>&lt;a class="row" href="mailto:…"&gt;&lt;span&gt;email&lt;/span&gt;&lt;span class="acc"&gt;…&lt;/span&gt;&lt;/a&gt;</pre>
+    </div>
+    <div class="bp" style="border:1px solid #2b3a2f;padding:18px 20px;display:flex;flex-direction:column;gap:10px"><i class="cm"></i>
+      <div style="display:flex;align-items:baseline;gap:10px"><span class="h2">1s</span><span class="h3">Now / Uses</span></div>
+      <p class="p" style="font-size:13.5px">Stamp the update date from frontmatter, never by hand. Short "Now" prose, a reading/learning list, then a <code>2×2</code> setup grid of bordered cells (editor, machine, shell, languages). Source: <code>src/content/now.md</code> — one file you edit monthly.</p>
+      <pre>const upd = now.data.updated.toISOString().slice(0,7).replace('-','.');</pre>
+    </div>
+    <div class="bp" style="border:1px solid #2b3a2f;padding:18px 20px;display:flex;flex-direction:column;gap:10px"><i class="cm"></i>
+      <div style="display:flex;align-items:baseline;gap:10px"><span class="h2">1t</span><span class="h3">404</span></div>
+      <p class="p" style="font-size:13.5px"><code>$ cd /that/page</code>, a <code>44px+</code> accent <code>404</code>, the line <code>no such file or directory</code>, three escape chips (<code>cd ~</code>, projects, cv). Keep the rail mounted — a dead end should still navigate.</p>
+      <pre>&lt;!-- pages/404.astro — prerendered by default on static builds --&gt;</pre>
+    </div>
+  </div>
+</section>
+
+<section style="display:flex;flex-direction:column;gap:16px">
+  <div class="cap">06 · COMPONENT CONTRACTS</div>
+  <div style="border:1px solid #2b3a2f">
+    <div style="display:grid;grid-template-columns:170px 1fr 240px;gap:0;font:500 10px/1 'IBM Plex Mono',monospace;color:#6d7a72;letter-spacing:.14em;padding:11px 14px;border-bottom:1px solid #2b3a2f"><span>COMPONENT</span><span>PROPS</span><span>NOTES</span></div>
+    <div style="display:grid;grid-template-columns:170px 1fr 240px;gap:10px 0;padding:12px 14px;border-bottom:1px solid #24302a" class="mono"><span class="acc">Blueprint</span><span>as?, padding?</span><span style="color:#8b978f">Border + 4 marks. Wrap, don't restyle.</span></div>
+    <div style="display:grid;grid-template-columns:170px 1fr 240px;gap:10px 0;padding:12px 14px;border-bottom:1px solid #24302a" class="mono"><span class="acc">Rail</span><span>path</span><span style="color:#8b978f">Needs <code>Astro.url.pathname</code>.</span></div>
+    <div style="display:grid;grid-template-columns:170px 1fr 240px;gap:10px 0;padding:12px 14px;border-bottom:1px solid #24302a" class="mono"><span class="acc">Prompt</span><span>cmd, typeOn?</span><span style="color:#8b978f">Renders <code>$ cmd</code>; text present pre-JS.</span></div>
+    <div style="display:grid;grid-template-columns:170px 1fr 240px;gap:10px 0;padding:12px 14px;border-bottom:1px solid #24302a" class="mono"><span class="acc">Chip</span><span>variant, href?</span><span style="color:#8b978f"><code>&lt;a&gt;</code> when href, else <code>&lt;span&gt;</code>.</span></div>
+    <div style="display:grid;grid-template-columns:170px 1fr 240px;gap:10px 0;padding:12px 14px;border-bottom:1px solid #24302a" class="mono"><span class="acc">Duotone</span><span>src, alt, ratio?</span><span style="color:#8b978f">Framed, square, accent wash.</span></div>
+    <div style="display:grid;grid-template-columns:170px 1fr 240px;gap:10px 0;padding:12px 14px;border-bottom:1px solid #24302a" class="mono"><span class="acc">MetaSidebar</span><span>data, headings</span><span style="color:#8b978f">Sticky; skips empty fields.</span></div>
+    <div style="display:grid;grid-template-columns:170px 1fr 240px;gap:10px 0;padding:12px 14px" class="mono"><span class="acc">StatusLine</span><span>route, hint?</span><span style="color:#8b978f">Bottom strip; decorative, <code>aria-hidden</code>.</span></div>
+  </div>
+  <pre>--- // src/components/Duotone.astro
+import { Image } from 'astro:assets';
+const { src, alt, ratio = '16/10' } = Astro.props;
+---
+&lt;figure class="duotone" style={`--ratio:${ratio}`}&gt;
+  &lt;Image src={src} alt={alt} widths={[480, 960, 1440]} /&gt;
+  &lt;i class="c tl"&gt;&lt;/i&gt;&lt;i class="c tr"&gt;&lt;/i&gt;&lt;i class="c bl"&gt;&lt;/i&gt;&lt;i class="c br"&gt;&lt;/i&gt;
+&lt;/figure&gt;
+
+&lt;style&gt;
+  .duotone { position: relative; border: 1px solid var(--line-2); aspect-ratio: var(--ratio); }
+  .duotone img { width: 100%; height: 100%; object-fit: cover;
+    filter: grayscale(1) contrast(1.1) brightness(.75); }
+  .duotone::after { content: ''; position: absolute; inset: 0;
+    background: var(--acc); mix-blend-mode: color; opacity: .38; }
+  .c::before { content: '+'; position: absolute; font: 10px/1 var(--font-mono); color: var(--acc-line); }
+&lt;/style&gt;</pre>
+</section>
+
+<section style="display:flex;flex-direction:column;gap:16px">
+  <div class="cap">07 · THE FOUR EFFECTS — AND THEIR LIMITS</div>
+  <p class="p">All four are decoration layered over content that already reads. Each one sits behind <code>prefers-reduced-motion</code> and behind a <code>no-js</code> fallback that is simply the static state.</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+    <div class="bp" style="border:1px solid #2b3a2f;padding:16px 18px;display:flex;flex-direction:column;gap:8px"><i class="cm"></i><span class="h3">Type-on / decrypt</span><p class="p" style="font-size:13.5px">Only on the <code>1a</code> prompt and the <code>1a</code> name. Reveal by clipping a wrapper whose text is already in the DOM; cap at 700ms. Never on nav, never on body copy, never twice per page.</p></div>
+    <div class="bp" style="border:1px solid #2b3a2f;padding:16px 18px;display:flex;flex-direction:column;gap:8px"><i class="cm"></i><span class="h3">Scanlines / CRT</span><p class="p" style="font-size:13.5px">One fixed <code>pointer-events:none</code> overlay: 2px repeating-linear-gradient at <code>opacity ≤ .05</code>, plus an optional 0.5% vignette. No flicker animation on text — it destroys readability. Test small mono at 100% zoom before keeping it.</p></div>
+    <div class="bp" style="border:1px solid #2b3a2f;padding:16px 18px;display:flex;flex-direction:column;gap:8px"><i class="cm"></i><span class="h3">Hover reveal</span><p class="p" style="font-size:13.5px"><code>1g</code> only, and it must be duplicated onto <code>:focus-visible</code> — otherwise the page is keyboard-dead. Preview swaps are instant; no fades over 120ms.</p></div>
+    <div class="bp" style="border:1px solid #2b3a2f;padding:16px 18px;display:flex;flex-direction:column;gap:8px"><i class="cm"></i><span class="h3">Cursor-tracked grid</span><p class="p" style="font-size:13.5px">Background only, home band one. A CSS <code>radial-gradient</code> mask over a 32px grid, driven by two custom properties set on <code>pointermove</code> — rAF-throttled, dropped entirely on touch and on reduced-motion.</p></div>
+  </div>
+  <pre>/* base.css — the global escape hatch */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .scanlines, .cursor-grid { display: none; }
+}
+:focus-visible { outline: 2px solid var(--acc); outline-offset: 2px; }
+::selection { background: rgba(87,224,138,.25); color: var(--text); }</pre>
+</section>
+
+<section class="bp" style="border:1px solid #2b3a2f;padding:22px 24px;display:flex;flex-direction:column;gap:14px"><i class="cm"></i>
+  <div class="cap">08 · BUILD ORDER</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px 26px" class="mono">
+    <span><span class="acc">01</span> &nbsp;<code>bun create astro@latest</code> — empty, TS strict</span>
+    <span><span class="acc">05</span> &nbsp;<code>1g</code> index, JS-off first, then the script</span>
+    <span><span class="acc">02</span> &nbsp;<code>tokens.css</code> + <code>base.css</code>, self-hosted fonts</span>
+    <span><span class="acc">06</span> &nbsp;<code>1h</code> case study + two real projects in MDX</span>
+    <span><span class="acc">03</span> &nbsp;<code>Base</code> + <code>Rail</code> (<code>1k</code>) + <code>Blueprint</code></span>
+    <span><span class="acc">07</span> &nbsp;<code>1n</code>, <code>1r</code>, <code>1s</code>, <code>1t</code> — one sitting</span>
+    <span><span class="acc">04</span> &nbsp;<code>1a</code> home, static, no effects yet</span>
+    <span><span class="acc">08</span> &nbsp;effects last, then Lighthouse + keyboard pass</span>
+  </div>
+  <p class="p" style="font-size:13.5px">Ship after step 07. The effects are the last 5% and the first thing to cut if they cost readability. Still open: the CV page (<code>1o</code> in the wireframes) and the writing index / post pair (<code>1p</code>, <code>1q</code>) — both were wireframed but not selected, so the rail's <code>04</code> and <code>05</code> entries stay unlinked until you want them.</p>
+</section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}"></script>
+</body>
+</html>

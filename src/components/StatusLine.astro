@@ -1,0 +1,26 @@
+---
+interface Props {
+  route: string;
+  hint?: string;
+}
+
+const { route, hint } = Astro.props;
+---
+
+<div class="statusline mono" aria-hidden="true">
+  <span class="acc">{route}</span>
+  {hint && <span class="hint">{hint}</span>}
+</div>
+
+<style>
+  .statusline {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s-3);
+    padding: var(--s-2) var(--s-5);
+    border-top: 1px solid var(--line);
+    font-size: 10px;
+    color: var(--text-mute);
+  }
+  .acc { color: var(--acc); }
+</style>

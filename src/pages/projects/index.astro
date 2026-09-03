@@ -1,0 +1,50 @@
+---
+import Base from '../../layouts/Base.astro';
+import ProjectList from '../../components/ProjectList.astro';
+import ProjectPreview from '../../components/ProjectPreview.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+const projects = (await getCollection('projects', (p: CollectionEntry<'projects'>) => !p.data.draft))
+  .sort((a: CollectionEntry<'projects'>, b: CollectionEntry<'projects'>) => a.data.order - b.data.order);
+---
+
+<Base title="Projects — Pedro Cardona" path="/projects" hint="j/k move">
+  <section class="index" data-selected="0">
+    <ProjectList projects={projects} />
+    <ProjectPreview projects={projects} />
+  </section>
+</Base>
+
+<style>
+  .index { display: flex; min-height: 100%; }
+</style>
+
+<script>
+  const root = document.querySelector('.index');
+  if (root instanceof HTMLElement) {
+    const links = [...root.querySelectorAll<HTMLAnchorElement>('a[data-i]')];
+    const panes = [...root.querySelectorAll<HTMLElement>('article[data-i]')];
+    const select = (i: number) => {
+      i = Math.max(0, Math.min(links.length - 1, i));
+      root.dataset.selected = String(i);
+      panes.forEach((p) => {
+        if (p instanceof HTMLElement) p.hidden = Number(p.dataset.i) !== i;
+      });
+    };
+    links.forEach((a, i) => {
+      a.addEventListener('mouseenter', () => select(i));
+      a.addEventListener('focus', () => select(i));
+    });
+    addEventListener('keydown', (e) => {
+      const current = Number(root.dataset.selected);
+      if (e.key === 'j' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        links[Math.min(current + 1, links.length - 1)].focus();
+      }
+      if (e.key === 'k' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        links[Math.max(current - 1, 0)].focus();
+      }
+    });
+  }
+</script>

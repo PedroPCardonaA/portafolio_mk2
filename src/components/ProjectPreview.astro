@@ -1,0 +1,46 @@
+---
+import Duotone from './Duotone.astro';
+import Chip from './Chip.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  projects: CollectionEntry<'projects'>[];
+}
+
+const { projects } = Astro.props;
+---
+
+<aside id="preview" aria-live="polite">
+  {projects.map((p, i) => (
+    <article data-i={i} hidden={i !== 0}>
+      {p.data.cover && <Duotone src={p.data.cover} alt="" />}
+      <p class="cap">{[...p.data.stack, p.data.role, String(p.data.year)].join(' · ')}</p>
+      <p class="summary">{p.data.summary}</p>
+      <div class="links">
+        <Chip variant="accent" href={`/projects/${p.id}`}>open →</Chip>
+        {p.data.links.repo && <Chip href={p.data.links.repo}>repo</Chip>}
+      </div>
+    </article>
+  ))}
+</aside>
+
+<style>
+  #preview {
+    width: 260px;
+    flex: none;
+    border-left: 1px solid var(--line);
+    padding: var(--s-5) var(--s-4);
+    position: sticky;
+    top: 0;
+    align-self: flex-start;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+  .summary { color: var(--text-dim); font-size: 13.5px; }
+  .links { display: flex; gap: var(--s-2); }
+
+  @media (max-width: 860px) {
+    #preview { display: none; }
+  }
+</style>

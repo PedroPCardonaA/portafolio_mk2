@@ -1,0 +1,72 @@
+---
+import Base from '../layouts/Base.astro';
+import Prompt from '../components/Prompt.astro';
+
+const rows = [
+  { label: 'email', value: 'you@example.com', href: 'mailto:you@example.com' },
+  { label: 'github', value: 'github.com/yourhandle', href: 'https://github.com/yourhandle' },
+  { label: 'linkedin', value: 'linkedin.com/in/yourhandle', href: 'https://linkedin.com/in/yourhandle' },
+  { label: 'orcid / scholar', value: 'orcid.org/0000-0000-0000-0000', href: 'https://orcid.org/0000-0000-0000-0000' },
+];
+---
+
+<Base title="Contact — Pedro Cardona" description="Get in touch with Pedro Cardona." path="/contact">
+  <section class="page">
+    <Prompt cmd='mail -s "hello"' />
+    <h1>Get in touch</h1>
+    <p class="lede">Best for hiring, collaboration or a paper you want to talk about.</p>
+
+    <div class="rows">
+      {rows.map((r) => (
+        <a class="row" href={r.href}>
+          <span class="label mono">{r.label}</span>
+          <span class="value mono">{r.value}</span>
+        </a>
+      ))}
+    </div>
+
+    <div class="actions">
+      <button id="copy-email" type="button" class="copy-btn" data-email="you@example.com">copy email</button>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page { padding: var(--s-8); display: flex; flex-direction: column; gap: var(--s-3); max-width: var(--measure); }
+  .lede { color: var(--text-dim); font-size: 14.5px; max-width: 50ch; }
+  .rows { display: flex; flex-direction: column; gap: var(--s-2); margin-top: var(--s-2); }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid var(--line-2);
+    padding: var(--s-2) var(--s-3);
+    color: var(--text-dim);
+  }
+  .row:hover { color: var(--acc); border-color: var(--acc-line); }
+  .label { color: var(--text-mute); }
+  .actions { margin-top: var(--s-2); }
+  .copy-btn {
+    border: 1px solid rgba(87, 224, 138, .5);
+    color: var(--acc);
+    padding: 4px 9px;
+    font: 400 10.5px var(--font-mono);
+  }
+  .copy-btn:hover { color: var(--acc-hover); border-color: var(--acc-hover); }
+</style>
+
+<script>
+  const btn = document.getElementById('copy-email');
+  if (btn instanceof HTMLButtonElement) {
+    const original = btn.textContent ?? 'copy email';
+    btn.addEventListener('click', async () => {
+      const email = btn.dataset.email ?? '';
+      try {
+        await navigator.clipboard.writeText(email);
+        btn.textContent = 'copied ✓';
+        setTimeout(() => { btn.textContent = original; }, 2000);
+      } catch {
+        // clipboard API unavailable — the row above still has a working mailto: link
+      }
+    });
+  }
+</script>

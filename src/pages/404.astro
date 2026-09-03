@@ -1,0 +1,33 @@
+---
+import Base from '../layouts/Base.astro';
+import Prompt from '../components/Prompt.astro';
+import Chip from '../components/Chip.astro';
+---
+
+<Base title="404 — Pedro Cardona" description="Page not found." path="/404">
+  <section class="page">
+    <Prompt cmd="cd /that/page" />
+    <p class="code">404</p>
+    <p class="msg mono">no such file or directory</p>
+    <div class="chips">
+      <Chip variant="accent" href="/">cd ~</Chip>
+      <Chip href="/projects">projects</Chip>
+      <Chip href="/about">about</Chip>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .page {
+    min-height: 60svh;
+    padding: var(--s-8);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: var(--s-3);
+  }
+  .code { font: 700 88px/.9 var(--font-head); color: var(--acc); margin: 0; }
+  .msg { color: var(--text-dim); margin: 0; }
+  .chips { display: flex; gap: var(--s-2); margin-top: var(--s-2); }
+</style>
