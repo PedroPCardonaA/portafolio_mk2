@@ -1,21 +1,25 @@
 ---
-import { getCollection, render, type CollectionEntry } from 'astro:content';
+import { getEntry, render } from 'astro:content';
+import { getProjects, type ProjectEntry } from '../../lib/supabase';
 import Prose from '../../layouts/Prose.astro';
 import MetaSidebar from '../../components/MetaSidebar.astro';
 import Duotone from '../../components/Duotone.astro';
 
 export async function getStaticPaths() {
-  const projects = (await getCollection('projects', (p: CollectionEntry<'projects'>) => !p.data.draft))
-    .sort((a: CollectionEntry<'projects'>, b: CollectionEntry<'projects'>) => a.data.order - b.data.order);
+  const projects = (await getProjects())
+    .filter((p) => !p.data.draft)
+    .sort((a, b) => a.data.order - b.data.order);
 
-  return projects.map((entry: CollectionEntry<'projects'>, i: number) => ({
+  return projects.map((entry: ProjectEntry, i: number) => ({
     params: { slug: entry.id },
     props: { entry, prev: projects[i - 1] ?? null, next: projects[i + 1] ?? null },
   }));
 }
 
 const { entry, prev, next } = Astro.props;
-const { Content, headings } = await render(entry);
+const body = await getEntry('projectBodies', entry.id);
+if (!body) throw new Error(`Missing src/content/projects/${entry.id}.mdx case-study body`);
+const { Content, headings } = await render(body);
 ---
 
 <Prose title={`${entry.data.title} — Pedro Cardona`} description={entry.data.summary} path={`/projects/${entry.id}`}>

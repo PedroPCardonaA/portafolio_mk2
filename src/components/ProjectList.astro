@@ -1,8 +1,8 @@
 ---
-import type { CollectionEntry } from 'astro:content';
+import type { ProjectEntry } from '../lib/supabase';
 
 interface Props {
-  projects: CollectionEntry<'projects'>[];
+  projects: ProjectEntry[];
 }
 
 const { projects } = Astro.props;

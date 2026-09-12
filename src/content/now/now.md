@@ -1,12 +1,10 @@
 ---
-updated: 2026-09-01
+updated: 2026-09-12
 ---
 
-TODO: replace with a short paragraph on what you're currently focused on — work, research, life.
-
-TODO: replace with a second short paragraph if useful; keep this page brief and easy to update monthly.
+I just started a PhD in Computer Science at NTNU (August 2026), continuing the research from my MSc thesis on Visual Mamba (ViM) — state-space models for vision. Alongside that I'm still mentoring at NTNU: as an Education Mentor supporting a student's studies in CS, AI and maths, and as a learning assistant since 2023.
 
 ## Reading / learning
 
-- TODO: book, paper or course you're currently working through
-- TODO: another one
+- The Mamba and Visual Mamba (ViM) papers — building on my thesis for the PhD
+- Recently went through LinkedIn Learning's "RAG and Fine-Tuning Explained" and "Advanced NLP with Python for Machine Learning"

@@ -1,0 +1,14 @@
+---
+---
+
+## 01 Context
+
+Sticos AS held a large database of metadata collected via Snowplow, but getting information out of it meant hand-writing BigQuery SQL. As a summer intern in 2023, I worked on a project using AI to close that gap.
+
+## 02 Approach
+
+The project used AI to convert natural-language prompts directly into BigQuery queries, then ran those queries immediately against the Snowplow-backed metadata database to retrieve the requested information — pairing prompt engineering with a working understanding of the underlying schema to keep the generated queries accurate.
+
+## 03 Result
+
+The result was a working natural-language-to-SQL pipeline that let people pull the right information out of a large metadata database without writing BigQuery queries by hand — early, hands-on experience applying LLMs to a real production data problem.

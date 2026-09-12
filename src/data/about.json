@@ -1,17 +1,27 @@
 {
   "bio": [
-    "TODO: replace with the real first paragraph of your bio — who you are, what you do.",
-    "TODO: replace with a second paragraph — background, focus areas, what you're looking for."
+    "I'm a computer engineer and PhD student in Computer Science at NTNU, having just completed my MSc (2024–2026) with a thesis on the Visual Mamba (ViM) architecture — exploring state-space models as an alternative to transformers for vision tasks. I'm also the founder of Raven Labs AS. I'm a proactive learner drawn to fast-moving fields like AI and Web3, and I like turning research ideas into working software.",
+    "Recent work spans building an AI pipeline that turns natural-language prompts into BigQuery queries at Sticos, leading a small intern team through a production web rebuild at Bouvet, and teaching and mentoring at NTNU since 2023 — including as an Education Mentor supporting a student's academic path in computer science, AI and mathematics. I value clear communication and building things that actually get used."
   ],
   "certs": [
-    { "name": "TODO: Certification A", "current": true },
-    { "name": "TODO: Certification B", "current": false },
-    { "name": "TODO: Certification C", "current": false }
+    { "name": "PhD Computer Science, NTNU — in progress", "current": true },
+    { "name": "MSc Computer Science (AI), NTNU", "current": false },
+    { "name": "BSc Computer Science, NTNU", "current": false }
   ],
   "tools": [
-    "TODO: Tool A",
-    "TODO: Tool B",
-    "TODO: Tool C",
-    "TODO: Tool D"
+    "Python",
+    "PyTorch",
+    "TensorFlow",
+    "NLP",
+    "Rust",
+    "Java",
+    "Solidity",
+    "Web3",
+    "TypeScript",
+    "Vue",
+    "React",
+    "Astro",
+    "PostgreSQL",
+    "Docker"
   ]
 }

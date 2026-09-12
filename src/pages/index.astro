@@ -2,10 +2,11 @@
 import Base from '../layouts/Base.astro';
 import Prompt from '../components/Prompt.astro';
 import Chip from '../components/Chip.astro';
-import { getCollection, type CollectionEntry } from 'astro:content';
+import { getProjects } from '../lib/supabase';
 
-const featured = (await getCollection('projects', (p: CollectionEntry<'projects'>) => !p.data.draft && p.data.featured))
-  .sort((a: CollectionEntry<'projects'>, b: CollectionEntry<'projects'>) => a.data.order - b.data.order);
+const featured = (await getProjects())
+  .filter((p) => !p.data.draft && p.data.featured)
+  .sort((a, b) => a.data.order - b.data.order);
 ---
 
 <Base

@@ -1,9 +1,9 @@
 ---
 import Base from '../layouts/Base.astro';
-import { getCollection, type CollectionEntry } from 'astro:content';
+import { getPublications, type PublicationData } from '../lib/supabase';
 
-const publications = (await getCollection('publications'))
-  .sort((a: CollectionEntry<'publications'>, b: CollectionEntry<'publications'>) => b.data.year - a.data.year);
+const publications = (await getPublications())
+  .sort((a, b) => b.year - a.year);
 ---
 
 <Base title="Publications — Pedro Cardona" description="Papers and publications by Pedro Cardona." path="/publications">
@@ -19,13 +19,13 @@ const publications = (await getCollection('publications'))
       </div>
     ) : (
       <ul class="list">
-        {publications.map((p: CollectionEntry<'publications'>) => (
+        {publications.map((p: PublicationData) => (
           <li>
-            <p class="title">{p.data.title}</p>
-            <p class="meta mono">{p.data.authors.join(', ')} · {p.data.venue} · {p.data.year}</p>
+            <p class="title">{p.title}</p>
+            <p class="meta mono">{p.authors.join(', ')} · {p.venue} · {p.year}</p>
             <div class="links">
-              {p.data.doi && <a class="acc" href={p.data.doi}>DOI ↗</a>}
-              {p.data.pdf && <a class="acc" href={p.data.pdf}>PDF ↗</a>}
+              {p.doi && <a class="acc" href={p.doi}>DOI ↗</a>}
+              {p.pdf && <a class="acc" href={p.pdf}>PDF ↗</a>}
             </div>
           </li>
         ))}

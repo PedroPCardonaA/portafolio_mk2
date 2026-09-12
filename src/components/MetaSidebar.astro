@@ -1,9 +1,9 @@
 ---
-import type { CollectionEntry } from 'astro:content';
+import type { ProjectData } from '../lib/supabase';
 import type { MarkdownHeading } from 'astro';
 
 interface Props {
-  data: CollectionEntry<'projects'>['data'];
+  data: ProjectData;
   headings?: MarkdownHeading[];
 }
 

@@ -2,10 +2,11 @@
 import Base from '../../layouts/Base.astro';
 import ProjectList from '../../components/ProjectList.astro';
 import ProjectPreview from '../../components/ProjectPreview.astro';
-import { getCollection, type CollectionEntry } from 'astro:content';
+import { getProjects } from '../../lib/supabase';
 
-const projects = (await getCollection('projects', (p: CollectionEntry<'projects'>) => !p.data.draft))
-  .sort((a: CollectionEntry<'projects'>, b: CollectionEntry<'projects'>) => a.data.order - b.data.order);
+const projects = (await getProjects())
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => a.data.order - b.data.order);
 ---
 
 <Base title="Projects — Pedro Cardona" path="/projects" hint="j/k move">

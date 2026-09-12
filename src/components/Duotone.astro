@@ -1,9 +1,6 @@
 ---
-import { Image } from 'astro:assets';
-import type { ImageMetadata } from 'astro';
-
 interface Props {
-  src: ImageMetadata;
+  src: string;
   alt: string;
   ratio?: string;
 }
@@ -12,7 +9,7 @@ const { src, alt, ratio = '16/10' } = Astro.props;
 ---
 
 <figure class="duotone" style={`--ratio:${ratio}`}>
-  <Image src={src} alt={alt} widths={[480, 960, 1440]} />
+  <img src={src} alt={alt} loading="lazy" />
   <i class="c tl"></i><i class="c tr"></i><i class="c bl"></i><i class="c br"></i>
 </figure>
 
