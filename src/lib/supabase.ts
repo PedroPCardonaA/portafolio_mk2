@@ -1,6 +1,16 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabase = createClient(import.meta.env.SUPABASE_URL, import.meta.env.SUPABASE_ANON_KEY);
+// Read from process.env, not import.meta.env: this file only ever runs at build
+// time (Node), and Vite's import.meta.env only forwards *real* CI/host env vars
+// (as opposed to ones from a committed .env file) when they're PUBLIC_-prefixed.
+const supabaseUrl = process.env.SUPABASE_URL ?? import.meta.env.SUPABASE_URL;
+const supabaseAnonKey = process.env.SUPABASE_ANON_KEY ?? import.meta.env.SUPABASE_ANON_KEY;
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  throw new Error('Missing SUPABASE_URL/SUPABASE_ANON_KEY environment variables at build time.');
+}
+
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 export interface ProjectData {
   title: string;
