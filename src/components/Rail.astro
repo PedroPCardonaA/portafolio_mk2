@@ -20,32 +20,31 @@ const active = (href: string | null) => !!href && (href === '/' ? path === '/' :
 
 <nav aria-label="Primary" class="rail">
   <a class="brand" href="/">P. Cardona</a>
-  <details class="disclosure">
-    <summary class="toggle" aria-label="Toggle navigation">
-      <span aria-hidden="true">☰</span>
-    </summary>
-    <div class="body">
-      <ul>
-        {nav.map(([n, label, href]) => (
-          <li>
-            {href ? (
-              <a href={href} aria-current={active(href) ? 'page' : undefined} class:list={[{ active: active(href) }]}>
-                <span class="num">{n}</span>{label}
-              </a>
-            ) : (
-              <span class="disabled" aria-disabled="true">
-                <span class="num">{n}</span>{label}
-              </span>
-            )}
-          </li>
-        ))}
-      </ul>
-      <a class="foot" href={contact[2]} aria-current={active(contact[2]) ? 'page' : undefined}>
-        <span class="num">{contact[0]}</span>{contact[1]}
-      </a>
-      <span class="cap locale">EN · ES</span>
-    </div>
-  </details>
+  <input type="checkbox" id="nav-toggle" class="nav-toggle-checkbox" />
+  <label for="nav-toggle" class="toggle" aria-label="Toggle navigation">
+    <span aria-hidden="true">☰</span>
+  </label>
+  <div class="body">
+    <ul>
+      {nav.map(([n, label, href]) => (
+        <li>
+          {href ? (
+            <a href={href} aria-current={active(href) ? 'page' : undefined} class:list={[{ active: active(href) }]}>
+              <span class="num">{n}</span>{label}
+            </a>
+          ) : (
+            <span class="disabled" aria-disabled="true">
+              <span class="num">{n}</span>{label}
+            </span>
+          )}
+        </li>
+      ))}
+    </ul>
+    <a class="foot" href={contact[2]} aria-current={active(contact[2]) ? 'page' : undefined}>
+      <span class="num">{contact[0]}</span>{contact[1]}
+    </a>
+    <span class="cap locale">EN · ES</span>
+  </div>
 </nav>
 
 <style>
@@ -66,19 +65,22 @@ const active = (href: string | null) => !!href && (href === '/' ? path === '/' :
     letter-spacing: .14em;
     color: var(--acc);
   }
-  .disclosure { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+  .nav-toggle-checkbox { position: absolute; opacity: 0; pointer-events: none; }
   .toggle { display: none; }
-  .body { display: flex; flex-direction: column; flex: 1; padding: 0 var(--s-3) var(--s-4); gap: var(--s-2); }
-  ul { display: flex; flex-direction: column; gap: var(--s-2); }
+  .body { flex: 1; display: flex; flex-direction: column; min-height: 0; padding: 0 var(--s-3) var(--s-4); gap: var(--s-2); }
+  ul { display: flex; flex-direction: column; gap: var(--s-1); }
   .body a, .disabled {
     display: flex;
     align-items: baseline;
     gap: var(--s-2);
     font: 400 11px/1.4 var(--font-mono);
     color: var(--text-dim);
-    padding: var(--s-1) 0;
+    padding: var(--s-2) var(--s-2);
+    margin: 0 calc(var(--s-2) * -1);
+    border-left: 2px solid transparent;
   }
-  .body a:hover, .body a.active { color: var(--acc); }
+  .body a:hover { color: var(--acc); background: var(--acc-wash); }
+  .body a.active { color: var(--acc); background: var(--acc-wash); border-left-color: var(--acc); }
   .disabled { color: var(--text-mute); }
   .num { color: var(--text-mute); }
   .body a.active .num, .body a:hover .num { color: var(--acc); }
@@ -88,9 +90,7 @@ const active = (href: string | null) => !!href && (href === '/' ? path === '/' :
   @media (max-width: 860px) {
     .rail { inset: 0 0 auto 0; width: 100%; height: 48px; flex-direction: row; align-items: center; border-right: 0; border-bottom: 1px solid var(--line); }
     .brand { padding: 0 var(--s-3); }
-    .disclosure { flex: none; margin-left: auto; position: relative; }
-    .toggle { display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; cursor: pointer; list-style: none; font-size: 18px; color: var(--text-dim); }
-    .toggle::-webkit-details-marker { display: none; }
+    .toggle { display: flex; align-items: center; justify-content: center; width: 48px; height: 48px; margin-left: auto; cursor: pointer; font-size: 18px; color: var(--text-dim); }
     .body {
       display: none;
       position: fixed;
@@ -99,7 +99,8 @@ const active = (href: string | null) => !!href && (href === '/' ? path === '/' :
       overflow-y: auto;
       padding: var(--s-5) var(--s-4);
     }
-    .disclosure[open] .body { display: flex; }
+    .nav-toggle-checkbox:checked ~ .body { display: flex; }
+    .nav-toggle-checkbox:checked ~ .toggle { color: var(--acc); }
     .body a, .disabled { font-size: 14px; }
   }
 </style>

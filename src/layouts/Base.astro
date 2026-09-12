@@ -27,6 +27,7 @@ const route = path ?? Astro.url.pathname;
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500&display=swap" />
 </head>
 <body>
+  <canvas id="matrix-bg" aria-hidden="true"></canvas>
   <Rail path={route} />
   <main>
     <slot />
@@ -34,3 +35,60 @@ const route = path ?? Astro.url.pathname;
   <StatusLine route={route} hint={hint} />
 </body>
 </html>
+
+<style>
+  #matrix-bg {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    opacity: .4;
+  }
+  main { position: relative; z-index: 1; }
+
+  @media (prefers-reduced-motion: reduce) {
+    #matrix-bg { display: none; }
+  }
+</style>
+
+<script>
+  const canvas = document.getElementById('matrix-bg');
+  const prefersReducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (canvas instanceof HTMLCanvasElement && !prefersReducedMotion) {
+    const ctx = canvas.getContext('2d');
+    if (ctx) {
+      const chars = 'アイウエオカキクケコサシスセソ0123456789';
+      const fontSize = 15;
+      let drops: number[] = [];
+
+      const resize = () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const columns = Math.floor(canvas.width / fontSize);
+        drops = Array.from({ length: columns }, () => Math.random() * -50);
+      };
+      resize();
+      addEventListener('resize', resize);
+
+      setInterval(() => {
+        // low-alpha fill over the previous frame — this is what makes each
+        // falling character fade out ("vanish") instead of leaving a trail
+        ctx.fillStyle = 'rgba(10, 11, 10, 0.08)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.font = `${fontSize}px monospace`;
+
+        for (let i = 0; i < drops.length; i++) {
+          const char = chars[Math.floor(Math.random() * chars.length)];
+          const isLead = Math.random() > 0.94;
+          ctx.fillStyle = isLead ? 'rgba(143, 240, 180, 0.5)' : 'rgba(87, 224, 138, 0.22)';
+          ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+          if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+          drops[i]++;
+        }
+      }, 60);
+    }
+  }
+</script>

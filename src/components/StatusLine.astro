@@ -14,6 +14,8 @@ const { route, hint } = Astro.props;
 
 <style>
   .statusline {
+    position: relative;
+    z-index: 1;
     display: flex;
     justify-content: space-between;
     gap: var(--s-3);
@@ -21,6 +23,7 @@ const { route, hint } = Astro.props;
     border-top: 1px solid var(--line);
     font-size: 10px;
     color: var(--text-mute);
+    background: var(--bg);
   }
   .acc { color: var(--acc); }
 </style>
