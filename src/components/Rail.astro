@@ -5,17 +5,26 @@ interface Props {
 
 const nav: [string, string, string | null][] = [
   ['01', 'Home', '/'],
-  ['02', 'Work', '/projects'],
-  ['03', 'Publications', '/publications'],
+  ['02', 'Work', '/#work'],
+  ['03', 'Publications', '/#publications'],
   ['04', 'CV', null],
-  ['05', 'Posts', '/posts'],
-  ['06', 'About', '/about'],
-  ['07', 'Now / Uses', '/now'],
+  ['05', 'Posts', '/#posts'],
+  ['06', 'About', '/#about'],
+  ['07', 'Now / Uses', '/#now'],
 ];
-const contact: [string, string, string] = ['08', 'Contact', '/contact'];
+const contact: [string, string, string] = ['08', 'Contact', '/#contact'];
 
 const { path } = Astro.props;
-const active = (href: string | null) => !!href && (href === '/' ? path === '/' : path.startsWith(href));
+// Detail pages (/projects/*, /posts/*) aren't sections of the one-pager, so fall back to
+// highlighting the section they belong under. On "/" itself, a client-side scroll-spy
+// (below) takes over and drives the .active class as the user scrolls.
+const active = (href: string | null) => {
+  if (!href) return false;
+  if (href === '/') return path === '/';
+  if (path.startsWith('/projects')) return href === '/#work';
+  if (path.startsWith('/posts')) return href === '/#posts';
+  return false;
+};
 ---
 
 <nav aria-label="Primary" class="rail">
@@ -104,3 +113,51 @@ const active = (href: string | null) => !!href && (href === '/' ? path === '/' :
     .body a, .disabled { font-size: 14px; }
   }
 </style>
+
+<script>
+  // Covers every nav item, including "Home" (href="/") and "Contact" (the .foot link) —
+  // all of them live inside .body, so a single selector reaches all of them.
+  const navLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('.body a'));
+  const toggle = document.getElementById('nav-toggle');
+  const idFor = (href: string) => (href === '/' ? 'home' : href.startsWith('/#') ? href.slice(2) : null);
+
+  // A same-page anchor jump doesn't trigger a full reload, so nothing else
+  // would close the mobile menu overlay after picking a section — do it here.
+  navLinks.forEach((a) => {
+    a.addEventListener('click', () => {
+      if (toggle instanceof HTMLInputElement) toggle.checked = false;
+    });
+  });
+
+  // Scroll-spy only applies on the home page, where the sections actually exist.
+  // (On a detail page, the server-rendered .active class from Rail.astro's `active()`
+  // is left alone — there's nothing here to observe.)
+  if (location.pathname === '/') {
+    const sections = navLinks
+      .map((a) => {
+        const id = idFor(a.getAttribute('href') ?? '');
+        return id === 'home' ? document.querySelector<HTMLElement>('.boot') : id ? document.getElementById(id) : null;
+      })
+      .filter((el): el is HTMLElement => el instanceof HTMLElement);
+
+    if (sections.length > 0) {
+      const setActive = (id: string) => {
+        navLinks.forEach((a) => {
+          a.classList.toggle('active', idFor(a.getAttribute('href') ?? '') === id);
+        });
+      };
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          const visible = entries.filter((e) => e.isIntersecting);
+          if (visible.length > 0) {
+            const topMost = visible.reduce((a, b) => (a.boundingClientRect.top < b.boundingClientRect.top ? a : b));
+            setActive(topMost.target.id || 'home');
+          }
+        },
+        { rootMargin: '-10% 0px -70% 0px' }
+      );
+      sections.forEach((s) => observer.observe(s));
+    }
+  }
+</script>

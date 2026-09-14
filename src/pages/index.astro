@@ -2,16 +2,32 @@
 import Base from '../layouts/Base.astro';
 import Prompt from '../components/Prompt.astro';
 import Chip from '../components/Chip.astro';
-import { getProjects } from '../lib/supabase';
+import Blueprint from '../components/Blueprint.astro';
+import EmptyState from '../components/EmptyState.astro';
+import { getEntry, render } from 'astro:content';
+import { getProjects, getPublications, getPosts, type ProjectEntry, type PublicationData, type PostEntry } from '../lib/supabase';
+import about from '../data/about.json';
 
-const featured = (await getProjects())
-  .filter((p) => !p.data.draft && p.data.featured)
-  .sort((a, b) => a.data.order - b.data.order);
+const [projectsRaw, publications, postsRaw] = await Promise.all([getProjects(), getPublications(), getPosts()]);
+const projects = projectsRaw.filter((p) => !p.data.draft).sort((a, b) => a.data.order - b.data.order);
+const posts = postsRaw.filter((p) => !p.data.draft);
+
+const nowEntry = await getEntry('now', 'now');
+if (!nowEntry) throw new Error('Missing src/content/now/now.md entry');
+const { Content: NowContent } = await render(nowEntry);
+const updated = nowEntry.data.updated.toISOString().slice(0, 7).replace('-', '.');
+
+const setup = [
+  ['editor', 'TODO'],
+  ['machine', 'TODO'],
+  ['shell', 'TODO'],
+  ['langs', 'TODO'],
+];
 ---
 
 <Base
   title="Pedro Cardona — engineer, researcher"
-  description="Portfolio of Pedro Cardona: projects, publications and about."
+  description="Portfolio of Pedro Cardona: projects, publications, posts and about."
   path="/"
 >
   <section class="boot">
@@ -19,26 +35,155 @@ const featured = (await getProjects())
     <h1>Pedro Cardona</h1>
     <p class="pitch">Engineer · research — projects and publications in one readable place.</p>
     <ul class="chips">
-      <li><Chip variant="accent" href="/projects">projects</Chip></li>
-      <li><Chip href="/publications">publications</Chip></li>
-      <li><Chip href="/about">about</Chip></li>
+      <li><Chip variant="accent" href="#work">work</Chip></li>
+      <li><Chip href="#publications">publications</Chip></li>
+      <li><Chip href="#about">about</Chip></li>
     </ul>
     <a class="cue" href="#work">▌ scroll ↓</a>
   </section>
 
-  <section id="work" class="work">
-    <h2>Selected work</h2>
-    <ul>
-      {featured.map((p) => (
-        <li>
-          <a href={`/projects/${p.id}`}>
-            <span>{p.data.title}</span>
-            <span class="mono">{p.data.year}</span>
-          </a>
-        </li>
+  <section id="work" class="page">
+    <p class="cap">Work</p>
+    <h2>Projects</h2>
+    <div data-paginated data-page-size="5">
+      <ul class="list">
+        {projects.map((p: ProjectEntry) => (
+          <li>
+            <a href={`/projects/${p.id}`}>
+              <p class="title">{p.data.title}</p>
+              <p class="meta mono">{p.data.year} · {p.data.role}</p>
+              <p class="excerpt">{p.data.summary}</p>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <button type="button" class="load-more mono" data-load-more>Load more</button>
+    </div>
+  </section>
+
+  <section id="publications" class="page">
+    <p class="cap">Research output</p>
+    <h2>Publications</h2>
+
+    {publications.length === 0 ? (
+      <EmptyState
+        message="First publication coming soon."
+        sub="This section will list papers, preprints and theses as they're published — check back later."
+      />
+    ) : (
+      <div data-paginated data-page-size="5">
+        <ul class="list">
+          {publications.map((p: PublicationData) => (
+            <li>
+              <p class="title">{p.title}</p>
+              <p class="meta mono">{p.authors.join(', ')} · {p.venue} · {p.year}</p>
+              <div class="links">
+                {p.doi && <a class="acc" href={p.doi}>DOI ↗</a>}
+                {p.pdf && <a class="acc" href={p.pdf}>PDF ↗</a>}
+              </div>
+            </li>
+          ))}
+        </ul>
+        <button type="button" class="load-more mono" data-load-more>Load more</button>
+      </div>
+    )}
+  </section>
+
+  <section id="posts" class="page">
+    <p class="cap">Writing</p>
+    <h2>Posts</h2>
+
+    {posts.length === 0 ? (
+      <EmptyState
+        message="First post coming soon."
+        sub="This is where I'll share short opinion pieces — check back later."
+      />
+    ) : (
+      <div data-paginated data-page-size="5">
+        <ul class="list">
+          {posts.map((p: PostEntry) => (
+            <li>
+              <a href={`/posts/${p.id}`}>
+                <p class="title">{p.data.title}</p>
+                <p class="meta mono">{new Date(p.data.publishedAt).toISOString().slice(0, 10)}</p>
+                <p class="excerpt">{p.data.excerpt}</p>
+                {p.data.tags.length > 0 && (
+                  <div class="tags">
+                    {p.data.tags.map((t) => <Chip>{t}</Chip>)}
+                  </div>
+                )}
+              </a>
+            </li>
+          ))}
+        </ul>
+        <button type="button" class="load-more mono" data-load-more>Load more</button>
+      </div>
+    )}
+  </section>
+
+  <section id="about" class="page wide">
+    <p class="cap">About</p>
+    <div class="intro">
+      <Blueprint as="div" padding="0">
+        <img class="portrait" src="/portrait.jpg" alt="Pedro Cardona" />
+      </Blueprint>
+      <div class="bio">
+        <h2>Who I am</h2>
+        {about.bio.map((p: string) => <p>{p}</p>)}
+      </div>
+    </div>
+
+    <div class="block">
+      <p class="cap">Education</p>
+      <div class="chips">
+        {about.certs.map((c: { name: string; current: boolean }) => (
+          <Chip variant={c.current ? 'accent' : 'default'}>{c.name}</Chip>
+        ))}
+      </div>
+    </div>
+
+    <div class="block">
+      <p class="cap">Tools I actually use</p>
+      <p class="tools">{about.tools.join(', ')}</p>
+    </div>
+  </section>
+
+  <section id="now" class="page wide">
+    <p class="cap">Updated {updated}</p>
+    <h2>Now</h2>
+    <div class="prose-body"><NowContent /></div>
+
+    <p class="cap">Setup</p>
+    <div class="grid">
+      {setup.map(([label, value]) => (
+        <div class="cell mono"><span class="label">{label} —</span> {value}</div>
       ))}
-    </ul>
-    <a class="all" href="/projects">All projects →</a>
+    </div>
+  </section>
+
+  <section id="contact" class="page wide">
+    <Prompt cmd='mail -s "hello"' />
+    <h2>Get in touch</h2>
+    <p class="lede">Best for hiring, collaboration or a paper you want to talk about.</p>
+
+    <div class="rows">
+      <a class="row" href="mailto:pedro.cardona.tech@gmail.com" aria-label="Email">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="1"></rect><path d="M3 7l9 6 9-6"></path></svg>
+        <span class="value mono">pedro.cardona.tech@gmail.com</span>
+      </a>
+      <a class="row" href="https://github.com/PedroPCardonaA" aria-label="GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.333-1.755-1.333-1.755-1.089-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.42-1.305.762-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.469-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path></svg>
+        <span class="value mono">github.com/PedroPCardonaA</span>
+      </a>
+      <a class="row" href="https://www.linkedin.com/in/pedro-cardona-61724b308/" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"></path></svg>
+        <span class="value mono">linkedin.com/in/pedro-cardona-61724b308</span>
+      </a>
+    </div>
+
+    <div class="actions">
+      <button id="copy-email" type="button" class="copy-btn" data-email="pedro.cardona.tech@gmail.com">copy email</button>
+    </div>
   </section>
 </Base>
 
@@ -55,26 +200,113 @@ const featured = (await getProjects())
   .chips { display: flex; gap: var(--s-2); margin-top: var(--s-2); }
   .cue { display: inline-block; color: var(--acc); font: 400 12px var(--font-mono); margin-top: var(--s-4); }
 
-  .work {
-    padding: var(--s-8);
-    display: flex;
-    flex-direction: column;
-    gap: var(--s-4);
-    border-top: 1px solid var(--line);
+  section[id] { border-top: 1px solid var(--line); scroll-margin-top: 0; }
+  .page.wide { max-width: none; }
+
+  /* shared list pattern: Work, Publications, Posts */
+  .list { display: flex; flex-direction: column; margin-top: var(--s-4); }
+  .list li { border-top: 1px solid var(--line); }
+  .list li:last-child { border-bottom: 1px solid var(--line); }
+  .list > li > a, .list > li { display: flex; flex-direction: column; gap: 4px; padding: var(--s-3) 0; }
+  .title { font: 600 16px var(--font-head); text-transform: uppercase; letter-spacing: .02em; color: var(--text); }
+  .list a:hover .title { color: var(--acc); }
+  .meta { color: var(--text-dim); font-size: 12px; }
+  .excerpt { color: var(--text-dim); font-size: 13.5px; margin: 0; }
+  .tags { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-top: 4px; }
+  .links { display: flex; gap: var(--s-3); }
+  .acc { color: var(--acc); font: 400 12px var(--font-mono); }
+  .load-more {
+    margin-top: var(--s-4);
+    border: 1px solid var(--line-2);
+    padding: var(--s-2) var(--s-3);
+    color: var(--acc);
+    font-size: 12px;
   }
-  .work ul { display: flex; flex-direction: column; }
-  .work li { border-top: 1px solid var(--line); }
-  .work li:last-child { border-bottom: 1px solid var(--line); }
-  .work a {
-    display: flex;
-    justify-content: space-between;
-    padding: var(--s-3) 0;
-    font: 600 20px/1.1 var(--font-head);
-    text-transform: uppercase;
-    letter-spacing: .04em;
-    color: var(--text);
+  .load-more:hover { border-color: var(--acc-line); color: var(--acc-hover); }
+  .load-more[hidden] { display: none; }
+
+  /* About */
+  .intro { display: flex; gap: var(--s-5); align-items: flex-start; }
+  .portrait {
+    width: 88px;
+    height: 88px;
+    display: block;
+    object-fit: cover;
+    filter: grayscale(1) contrast(1.1) brightness(.85);
   }
-  .work a:hover { color: var(--acc); }
-  .work a .mono { color: var(--text-dim); font-size: 12px; }
-  .all { align-self: flex-start; color: var(--acc); font: 400 12px var(--font-mono); margin-top: var(--s-2); }
+  .bio { display: flex; flex-direction: column; gap: var(--s-3); }
+  .bio p { color: var(--text-dim); font-size: 14.5px; }
+  .block { display: flex; flex-direction: column; gap: var(--s-3); }
+  #about .chips { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+  .tools { color: var(--text-dim); font-size: 14.5px; margin: 0; }
+
+  /* Now */
+  .prose-body :global(p) { color: var(--text-dim); font-size: 14.5px; }
+  .prose-body :global(ul) { list-style: disc; padding-left: 1.4em; display: flex; flex-direction: column; gap: 4px; color: var(--text-dim); font-size: 14.5px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s-3); margin-top: var(--s-3); }
+  .cell { border: 1px solid var(--line-2); padding: var(--s-3); color: var(--text-dim); }
+  .label { color: var(--text-mute); }
+
+  /* Contact */
+  .lede { color: var(--text-dim); font-size: 14.5px; max-width: 50ch; }
+  .rows { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-top: var(--s-4); }
+  .row {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    width: fit-content;
+    border: 1px solid var(--line-2);
+    padding: var(--s-2) var(--s-3);
+    color: var(--text-dim);
+    white-space: nowrap;
+  }
+  .row svg { width: 16px; height: 16px; flex: none; }
+  .row:hover { color: var(--acc); border-color: var(--acc-line); }
+  .actions { margin-top: var(--s-4); }
+  .copy-btn {
+    border: 1px solid rgba(87, 224, 138, .5);
+    color: var(--acc);
+    padding: 4px 9px;
+    font: 400 10.5px var(--font-mono);
+  }
+  .copy-btn:hover { color: var(--acc-hover); border-color: var(--acc-hover); }
+
+  @media (max-width: 860px) {
+    section[id] { scroll-margin-top: 48px; }
+  }
 </style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-paginated]').forEach((wrap) => {
+    const pageSize = Number(wrap.getAttribute('data-page-size')) || 5;
+    const items = Array.from(wrap.querySelectorAll<HTMLLIElement>('ul > li'));
+    const btn = wrap.querySelector<HTMLButtonElement>('[data-load-more]');
+    let shown = pageSize;
+
+    const apply = () => {
+      items.forEach((li, i) => { li.hidden = i >= shown; });
+      if (btn) btn.hidden = shown >= items.length;
+    };
+    apply();
+
+    btn?.addEventListener('click', () => {
+      shown += pageSize;
+      apply();
+    });
+  });
+
+  const btn = document.getElementById('copy-email');
+  if (btn instanceof HTMLButtonElement) {
+    const original = btn.textContent ?? 'copy email';
+    btn.addEventListener('click', async () => {
+      const email = btn.dataset.email ?? '';
+      try {
+        await navigator.clipboard.writeText(email);
+        btn.textContent = 'copied ✓';
+        setTimeout(() => { btn.textContent = original; }, 2000);
+      } catch {
+        // clipboard API unavailable — the email row above still has a working mailto: link
+      }
+    });
+  }
+</script>
