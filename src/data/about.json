@@ -1,10 +1,10 @@
 {
   "bio": [
-    "I'm a computer engineer and PhD student in Computer Science at NTNU, having just completed my MSc (2024–2026) with a thesis on the Visual Mamba (ViM) architecture — exploring state-space models as an alternative to transformers for vision tasks. I'm also the founder of Raven Labs AS. I'm a proactive learner drawn to fast-moving fields like AI and Web3, and I like turning research ideas into working software.",
-    "Recent work spans building an AI pipeline that turns natural-language prompts into BigQuery queries at Sticos, leading a small intern team through a production web rebuild at Bouvet, and teaching and mentoring at NTNU since 2023 — including as an Education Mentor supporting a student's academic path in computer science, AI and mathematics. I value clear communication and building things that actually get used."
+    "I'm a PhD Research Fellow in Computer Science at NTNU, where I research privacy-preserving computation — specifically fully homomorphic encryption (FHE), which lets you compute directly on encrypted data without ever decrypting it. I'm also the founder of Raven Labs AS, and a proactive learner drawn to fast-moving fields like AI and Web3.",
+    "Before starting the PhD in August 2026, I completed an MSc in Computer Science (AI) at NTNU with a thesis on the Visual Mamba (ViM) architecture. My other work spans building an AI pipeline that turns natural-language prompts into BigQuery queries at Sticos, leading a small intern team through a production web rebuild at Bouvet, and teaching and mentoring at NTNU since 2023 — including as an Education Mentor supporting a student's academic path in computer science, AI and mathematics. I value clear communication and building things that actually get used."
   ],
   "certs": [
-    { "name": "PhD Computer Science, NTNU — in progress", "current": true },
+    { "name": "PhD Computer Science (Privacy-Preserving Encryption), NTNU — in progress", "current": true },
     { "name": "MSc Computer Science (AI), NTNU", "current": false },
     { "name": "BSc Computer Science, NTNU", "current": false }
   ],

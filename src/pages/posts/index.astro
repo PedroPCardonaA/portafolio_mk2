@@ -1,0 +1,52 @@
+---
+import Base from '../../layouts/Base.astro';
+import EmptyState from '../../components/EmptyState.astro';
+import Chip from '../../components/Chip.astro';
+import { getPosts, type PostEntry } from '../../lib/supabase';
+
+const posts = (await getPosts()).filter((p) => !p.data.draft);
+---
+
+<Base title="Posts — Pedro Cardona" description="Opinions and short writing by Pedro Cardona." path="/posts">
+  <section class="page">
+    <p class="cap">Writing</p>
+    <h1>Posts</h1>
+
+    {posts.length === 0 ? (
+      <EmptyState
+        message="First post coming soon."
+        sub="This is where I'll share short opinion pieces — check back later."
+      />
+    ) : (
+      <ul class="list">
+        {posts.map((p: PostEntry) => (
+          <li>
+            <a href={`/posts/${p.id}`}>
+              <p class="title">{p.data.title}</p>
+              <p class="meta mono">{new Date(p.data.publishedAt).toISOString().slice(0, 10)}</p>
+              <p class="excerpt">{p.data.excerpt}</p>
+              {p.data.tags.length > 0 && (
+                <div class="tags">
+                  {p.data.tags.map((t) => <Chip>{t}</Chip>)}
+                </div>
+              )}
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
+  </section>
+</Base>
+
+<style>
+  .page { gap: var(--s-4); }
+  .list { display: flex; flex-direction: column; margin-top: var(--s-4); }
+  .list li { border-top: 1px solid var(--line); }
+  .list li:last-child { border-bottom: 1px solid var(--line); }
+  .list a { display: flex; flex-direction: column; gap: 4px; padding: var(--s-3) 0; }
+  .title { font: 600 16px var(--font-head); text-transform: uppercase; letter-spacing: .02em; color: var(--text); }
+  .list a:hover .title { color: var(--acc); }
+  .meta { color: var(--text-dim); font-size: 12px; }
+  .excerpt { color: var(--text-dim); font-size: 13.5px; margin: 0; }
+  .tags { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-top: 4px; }
+</style>

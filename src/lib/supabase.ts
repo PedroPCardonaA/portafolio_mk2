@@ -85,3 +85,32 @@ export async function getPublications(): Promise<PublicationData[]> {
     kind: row.kind,
   }));
 }
+
+export interface PostData {
+  title: string;
+  excerpt: string;
+  publishedAt: string;
+  tags: string[];
+  draft: boolean;
+}
+
+export interface PostEntry {
+  id: string;
+  data: PostData;
+}
+
+export async function getPosts(): Promise<PostEntry[]> {
+  const { data, error } = await supabase.from('posts').select('*').order('published_at', { ascending: false });
+  if (error) throw error;
+
+  return data.map((row) => ({
+    id: row.slug,
+    data: {
+      title: row.title,
+      excerpt: row.excerpt,
+      publishedAt: row.published_at,
+      tags: row.tags ?? [],
+      draft: row.draft,
+    },
+  }));
+}

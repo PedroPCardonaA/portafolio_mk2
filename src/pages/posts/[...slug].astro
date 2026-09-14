@@ -1,0 +1,56 @@
+---
+import { getEntry, render } from 'astro:content';
+import { getPosts, type PostEntry } from '../../lib/supabase';
+import Prose from '../../layouts/Prose.astro';
+import Chip from '../../components/Chip.astro';
+
+export async function getStaticPaths() {
+  const posts = (await getPosts()).filter((p) => !p.data.draft);
+
+  return posts.map((entry: PostEntry, i: number) => ({
+    params: { slug: entry.id },
+    props: { entry, prev: posts[i - 1] ?? null, next: posts[i + 1] ?? null },
+  }));
+}
+
+const { entry, prev, next } = Astro.props;
+const body = await getEntry('postBodies', entry.id);
+if (!body) throw new Error(`Missing src/content/posts/${entry.id}.mdx post body`);
+const { Content } = await render(body);
+const published = new Date(entry.data.publishedAt).toISOString().slice(0, 10);
+---
+
+<Prose title={`${entry.data.title} — Pedro Cardona`} description={entry.data.excerpt} path={`/posts/${entry.id}`}>
+  <p class="kicker cap">Posted {published}</p>
+  <h1>{entry.data.title}</h1>
+  {entry.data.tags.length > 0 && (
+    <div class="tags">
+      {entry.data.tags.map((t) => <Chip>{t}</Chip>)}
+    </div>
+  )}
+  <article>
+    <Content />
+  </article>
+  <nav class="pager">
+    {prev ? <a href={`/posts/${prev.id}`}>← {prev.data.title}</a> : <span />}
+    {next ? <a href={`/posts/${next.id}`}>{next.data.title} →</a> : <span />}
+  </nav>
+</Prose>
+
+<style>
+  .kicker { margin: 0 0 var(--s-2); }
+  h1 { margin-bottom: var(--s-4); }
+  .tags { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-bottom: var(--s-5); }
+  article { display: flex; flex-direction: column; gap: var(--s-3); }
+  article :global(h2) { margin-top: var(--s-7); font-size: 20px; }
+  .pager {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s-4);
+    margin-top: var(--s-8);
+    padding-top: var(--s-4);
+    border-top: 1px solid var(--line);
+    font: 400 13px var(--font-mono);
+    color: var(--acc);
+  }
+</style>

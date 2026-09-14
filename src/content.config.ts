@@ -10,6 +10,13 @@ const projectBodies = defineCollection({
   schema: z.object({}),
 });
 
+// Post metadata lives in Supabase (see src/lib/supabase.ts); this collection holds
+// only the long-form body for each post, matched to its Supabase row by slug/filename.
+const postBodies = defineCollection({
+  loader: glob({ pattern: '**/*.mdx', base: './src/content/posts' }),
+  schema: z.object({}),
+});
+
 const now = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/now' }),
   schema: z.object({
@@ -17,4 +24,4 @@ const now = defineCollection({
   }),
 });
 
-export const collections = { projectBodies, now };
+export const collections = { projectBodies, postBodies, now };
