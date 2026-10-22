@@ -7,7 +7,7 @@ const nav: [string, string, string | null][] = [
   ['01', 'Home', '/'],
   ['02', 'Work', '/#work'],
   ['03', 'Publications', '/#publications'],
-  ['04', 'CV', null],
+  ['04', 'CV', '/Pedro-Cardona-CV.pdf'],
   ['05', 'Posts', '/#posts'],
   ['06', 'About', '/#about'],
   ['07', 'Now / Uses', '/#now'],
@@ -38,7 +38,7 @@ const active = (href: string | null) => {
       {nav.map(([n, label, href]) => (
         <li>
           {href ? (
-            <a href={href} aria-current={active(href) ? 'page' : undefined} class:list={[{ active: active(href) }]}>
+            <a href={href} download={href.endsWith('.pdf') ? '' : undefined} aria-current={active(href) ? 'page' : undefined} class:list={[{ active: active(href) }]}>
               <span class="num">{n}</span>{label}
             </a>
           ) : (
