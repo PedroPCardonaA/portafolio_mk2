@@ -1,0 +1,29 @@
+---
+---
+
+I've open-sourced Athena, a small private vault for the things a PhD produces long before it produces papers: ideas, the sources behind each idea, and a running journal.
+
+## Why I built it
+
+Early in a PhD, ideas arrive faster than they get written down properly, and the papers that motivated them get lost in a browser history. I wanted one place to keep an idea together with its citations and notes, without handing any of it to a hosted service.
+
+## What it does
+
+- **Organised.** Group ideas into projects, with status, tags and full-text search.
+- **Local and single-user.** It runs in a rootless podman container bound to `127.0.0.1`. Your data is a single SQLite file.
+- **Secure by default.** Read-only container, no capabilities, argon2 password, CSRF protection and a strict CSP.
+- **Citations everywhere.** Sources per idea and per project, with BibTeX import and export.
+- **Yours.** Full JSON export and import, plus a one-command backup.
+
+## An agent that does the reading
+
+Athena ships an MCP server. Connect Claude Code, Codex, Cursor or another agent and ask it to *research idea 3* or *summarize my thesis project*. It can read, add and change projects, ideas, sources and notes, but never delete, and there is a read-only mode if you want view-only access.
+
+## Try it
+
+```bash
+git clone https://github.com/PedroPCardonaA/athena && cd athena
+./setup.sh
+```
+
+It's MIT licensed. Source and docs: [github.com/PedroPCardonaA/athena](https://github.com/PedroPCardonaA/athena).

@@ -1,0 +1,14 @@
+---
+---
+
+## 01 Context
+
+A PhD generates ideas, reading lists and half-formed notes faster than a folder of files can keep track of. I wanted a single place to keep each idea together with the sources behind it, one that stays on my own machine and that an AI agent can help me work through.
+
+## 02 Approach
+
+Athena is a FastAPI and SQLite app, server-rendered with no JavaScript and no build step, running in a read-only rootless podman container bound to `127.0.0.1`. Ideas are grouped into projects with status, tags, full-text search and per-idea sources, with BibTeX and JSON import and export. A built-in MCP server lets agents read, add and change content (never delete) and ships prompts such as `research_idea` and `weekly_review`.
+
+## 03 Result
+
+Athena is open source under the MIT licence and I use it for my own PhD work. See the [repository](https://github.com/PedroPCardonaA/athena) for setup instructions and the security notes.

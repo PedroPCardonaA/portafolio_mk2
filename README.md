@@ -23,7 +23,7 @@ Personal portfolio/CV site: projects, publications, about, contact. Built with A
 └── package.json
 ```
 
-Project/publication metadata (title, summary, stack, links, status, order, featured, cover, etc.) lives in the Supabase `portafolio` project's `projects` and `publications` tables — edit rows there via Supabase Studio and rebuild the site to publish changes. Copy `.env.example` to `.env` and fill in `SUPABASE_URL`/`SUPABASE_ANON_KEY` to build locally.
+Project/publication metadata (title, summary, stack, links, status, order, featured, cover, etc.) lives in the Supabase project (`jcoqilrhlxjdbfewlwgm`; schema in `supabase/migrations`, seed in `supabase/seed.sql`), in the `projects`, `publications` and `posts` tables — edit rows there via Supabase Studio and rebuild the site to publish changes. Copy `.env.example` to `.env` and fill in `SUPABASE_URL`/`SUPABASE_ANON_KEY` to build locally.
 
 ## Commands
 
