@@ -7,6 +7,7 @@ import EmptyState from '../components/EmptyState.astro';
 import { getEntry, render } from 'astro:content';
 import { getProjects, getPublications, getPosts, type ProjectEntry, type PublicationData, type PostEntry } from '../lib/supabase';
 import about from '../data/about.json';
+import { repoLabel } from '../lib/links';
 
 const [projectsRaw, publications, postsRaw] = await Promise.all([getProjects(), getPublications(), getPosts()]);
 const projects = projectsRaw.filter((p) => !p.data.draft).sort((a, b) => a.data.order - b.data.order);
@@ -48,12 +49,19 @@ const setup = [
     <div data-paginated data-page-size="5">
       <ul class="list">
         {projects.map((p: ProjectEntry) => (
-          <li>
+          <li class:list={{ 'has-links': p.data.links.repo || p.data.links.live || p.data.links.paper }}>
             <a href={`/projects/${p.id}`}>
               <p class="title">{p.data.title}</p>
               <p class="meta mono">{p.data.year} · {p.data.role}</p>
               <p class="excerpt">{p.data.summary}</p>
             </a>
+            {(p.data.links.repo || p.data.links.live || p.data.links.paper) && (
+              <div class="links">
+                {p.data.links.repo && <a class="acc" href={p.data.links.repo}>{repoLabel(p.data.links.repo)} ↗</a>}
+                {p.data.links.live && <a class="acc" href={p.data.links.live}>live ↗</a>}
+                {p.data.links.paper && <a class="acc" href={p.data.links.paper}>paper ↗</a>}
+              </div>
+            )}
           </li>
         ))}
       </ul>
@@ -212,6 +220,9 @@ const setup = [
   .list a:hover .title { color: var(--acc); }
   .meta { color: var(--text-dim); font-size: 12px; }
   .excerpt { color: var(--text-dim); font-size: 13.5px; margin: 0; }
+  .list > li.has-links { padding: 0; gap: 0; }
+  .list > li.has-links > a { padding: var(--s-3) 0 4px; }
+  .list > li.has-links > .links { padding-bottom: var(--s-3); }
   .tags { display: flex; flex-wrap: wrap; gap: var(--s-2); margin-top: 4px; }
   .links { display: flex; gap: var(--s-3); }
   .acc { color: var(--acc); font: 400 12px var(--font-mono); }

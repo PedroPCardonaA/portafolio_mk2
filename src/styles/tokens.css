@@ -28,6 +28,7 @@
   --s-5:24px; --s-6:32px; --s-7:48px; --s-8:72px;
 
   --rail: 168px;          /* 1k */
-  --measure: 68ch;        /* prose cap */
+  --measure: 92ch;        /* prose cap */
+  --content: 1440px;      /* page content column cap */
   --radius: 0;            /* square corners, always */
 }

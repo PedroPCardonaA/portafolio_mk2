@@ -1,6 +1,7 @@
 ---
 import type { ProjectData } from '../lib/supabase';
 import type { MarkdownHeading } from 'astro';
+import { repoLabel } from '../lib/links';
 
 interface Props {
   data: ProjectData;
@@ -18,7 +19,7 @@ const links = data.links ?? {};
   {data.stack?.length > 0 && <div class="row"><span class="label mono">stack</span><span>{data.stack.join(', ')}</span></div>}
   {data.team && data.team.length > 0 && <div class="row"><span class="label mono">team</span><span>{data.team.join(', ')}</span></div>}
   {data.period && <div class="row"><span class="label mono">period</span><span>{data.period}</span></div>}
-  {links.repo && <div class="row"><a class="acc" href={links.repo}>repo ↗</a></div>}
+  {links.repo && <div class="row"><a class="acc" href={links.repo}>{repoLabel(links.repo)} ↗</a></div>}
   {links.live && <div class="row"><a class="acc" href={links.live}>live ↗</a></div>}
   {links.paper && <div class="row"><a class="acc" href={links.paper}>paper ↗</a></div>}
 

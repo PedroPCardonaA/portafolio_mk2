@@ -4,6 +4,7 @@ import { getProjects, type ProjectEntry } from '../../lib/supabase';
 import Prose from '../../layouts/Prose.astro';
 import MetaSidebar from '../../components/MetaSidebar.astro';
 import Duotone from '../../components/Duotone.astro';
+import { repoLabel } from '../../lib/links';
 
 export async function getStaticPaths() {
   const projects = (await getProjects())
@@ -25,6 +26,14 @@ const { Content, headings } = await render(body);
 <Prose title={`${entry.data.title} — Pedro Cardona`} description={entry.data.summary} path={`/projects/${entry.id}`}>
   <p class="kicker cap">Case study {String(entry.data.order).padStart(2, '0')} · {entry.data.year}</p>
   <h1>{entry.data.title}</h1>
+  <p class="summary">{entry.data.summary}</p>
+  {(entry.data.links.repo || entry.data.links.live || entry.data.links.paper) && (
+    <div class="links">
+      {entry.data.links.repo && <a href={entry.data.links.repo}>{repoLabel(entry.data.links.repo)} ↗</a>}
+      {entry.data.links.live && <a href={entry.data.links.live}>live ↗</a>}
+      {entry.data.links.paper && <a href={entry.data.links.paper}>paper ↗</a>}
+    </div>
+  )}
   {entry.data.cover && <Duotone src={entry.data.cover} alt="" />}
   <div class="body">
     <article>
@@ -40,7 +49,11 @@ const { Content, headings } = await render(body);
 
 <style>
   .kicker { margin: 0 0 var(--s-2); }
-  h1 { margin-bottom: var(--s-5); }
+  h1 { margin-bottom: var(--s-4); }
+  .summary { color: var(--text-dim); font-size: 16px; margin-bottom: var(--s-3); }
+  .links { display: flex; gap: var(--s-4); margin-bottom: var(--s-5); }
+  .links a { color: var(--acc); font: 400 13px var(--font-mono); }
+  .links a:hover { color: var(--acc-hover); }
   .body { display: flex; gap: var(--s-6); margin-top: var(--s-6); align-items: flex-start; }
   article { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: var(--s-3); }
   article :global(h2) { margin-top: var(--s-7); font-size: 20px; }
